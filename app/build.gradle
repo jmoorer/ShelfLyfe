@@ -76,4 +76,7 @@ dependencies {
 
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    implementation group: 'androidx.palette', name: 'palette', version: '1.0.0'
+
+
 }
