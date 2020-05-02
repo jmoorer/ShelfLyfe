@@ -13,6 +13,10 @@ import retrofit2.http.Path
 
 interface NytService {
 
+    companion object{
+        val baseUrl="https://api.nytimes.com/svc/books/v3/"
+    }
+
     @GET("lists/overview.json")
     fun getOverview(): Call<NytResponse<OverviewResult>>
 

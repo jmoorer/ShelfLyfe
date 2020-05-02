@@ -48,6 +48,7 @@ dependencies {
 
     def koin_version = '1.0.2'
     implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-android-viewmodel:$koin_version"
 
 
 
@@ -56,6 +57,8 @@ dependencies {
     implementation 'com.tickaroo.tikxml:retrofit-converter:0.8.13'
 
     kapt 'com.tickaroo.tikxml:processor:0.8.13'
+
+
 
 
 }

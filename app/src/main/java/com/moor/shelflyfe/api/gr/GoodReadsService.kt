@@ -10,6 +10,10 @@ import retrofit2.http.Query
 
 interface GoodReadsService {
 
+    companion object{
+        val baseUrl="https://www.goodreads.com/"
+    }
+
     @GET("book/isbn/{isbn}?format=xml")
     fun getBookDetails(@Path("isbn")isbn:String):Call<BookResponse>
 

@@ -18,16 +18,5 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//
-        bookRepository.nytService.getListByType("hardcover-fiction").makeCall { throwable, response ->
-//
-//            TODO()
-        }
-
-        bookRepository.goodReadsService.getBookDetails("9780735224315").makeCall { throwable, response ->
-
-            TODO()
-
-        }
     }
 }
