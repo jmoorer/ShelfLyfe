@@ -1,5 +1,7 @@
 package com.moor.shelflyfe
 
+import android.widget.ImageView
+import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -11,3 +13,6 @@ fun<T> Call<T>.makeCall(callback: (Throwable?, Response<T>?) -> Unit) {
     })
 }
 
+fun ImageView.load(url:String){
+    Picasso.get().load(url).fit().into(this)
+}
