@@ -5,10 +5,18 @@ import com.tickaroo.tikxml.annotation.Xml
 
 
 @Xml
-class GoodreadsResponse{
+class BookResponse{
 
     @Element
     var book: Book?= null
+}
+
+
+@Xml
+class AuthorResponse{
+
+    @Element
+    var author: Author?= null
 }
 
 
