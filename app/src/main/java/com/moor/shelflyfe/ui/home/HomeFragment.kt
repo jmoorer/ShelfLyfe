@@ -2,41 +2,47 @@ package com.moor.shelflyfe.ui.home
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-
-import com.moor.shelflyfe.R
 import com.moor.shelflyfe.databinding.HomeFragmentBinding
 import org.koin.android.viewmodel.ext.android.viewModel
+
+
 
 class HomeFragment : Fragment() {
 
 
-    val viewModel: HomeViewModel by  viewModel()
-    lateinit var binding :HomeFragmentBinding
+    private val viewModel: HomeViewModel by  viewModel()
+    private lateinit var binding : HomeFragmentBinding
+
+    private  var sections= arrayListOf<Section>()
+    private  var sectionAdapter=SectionAdapter(sections)
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        viewModel.getBestSellers().observe(viewLifecycleOwner, Observer {books->
-            binding.viewPager.adapter= BestSellerAdapter(books)
+        viewModel.getFeatured().observe(viewLifecycleOwner, Observer {books->
+            binding.viewPager.adapter= FeaturedAdapter(books)
         })
-        viewModel.getCategories().observe(viewLifecycleOwner, Observer { categories->
-            binding.category.adapter = CategoryAdapter(categories)
-            binding.category.layoutManager = LinearLayoutManager(context,RecyclerView.HORIZONTAL,false)
+        viewModel.getPopularList().observe(viewLifecycleOwner, Observer { section->
+            sections.add(section)
+            sectionAdapter.notifyDataSetChanged()
         })
         binding = HomeFragmentBinding.inflate(inflater,container,false)
-
+        binding.sections.apply{
+            adapter= sectionAdapter
+            layoutManager= LinearLayoutManager(context)
+        }
         return binding.root
     }
-
 
 
 }

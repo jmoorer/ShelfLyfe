@@ -4,6 +4,7 @@ import com.moor.shelflyfe.BuildConfig
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.api.google.GoogleBooksService
 import com.moor.shelflyfe.api.gr.GoodReadsService
+import com.moor.shelflyfe.api.itunes.ItunesService
 import com.moor.shelflyfe.api.nyt.NytService
 import com.moor.shelflyfe.ui.home.HomeViewModel
 import com.tickaroo.tikxml.TikXml
@@ -16,7 +17,7 @@ import org.koin.dsl.module.module
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
+import kotlin.math.sin
 
 
 val applicationModule = module(override = true) {
@@ -67,6 +68,11 @@ val applicationModule = module(override = true) {
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(GoogleBooksService::class.java)
     }
-    factory { BookRepository(get(),get(),get()) }
+    single<ItunesService>{
+        Retrofit.Builder().baseUrl(ItunesService.basrUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build().create(ItunesService::class.java)
+    }
+    factory { BookRepository(get(),get(),get(),get()) }
     viewModel { HomeViewModel(get()) }
 }
