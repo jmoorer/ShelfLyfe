@@ -29,6 +29,7 @@ class BestSellerAdapter(val books: List<Book>): RecyclerView.Adapter<BestSellerA
                           bookTitle.setTextColor(swatch.titleTextColor)
                           authorName.setTextColor(swatch.bodyTextColor)
                       }
+
                 }
             }
             authorName.text = "By ${book.author}"

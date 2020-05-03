@@ -10,7 +10,7 @@ import  androidx.palette.graphics.Palette
 import com.squareup.picasso.NetworkPolicy
 
 fun extractPallete(url:String,callback: (Exception?,Palette?) -> Unit){
-    Picasso.get().load(url).networkPolicy(NetworkPolicy.OFFLINE).into(object :Target{
+    Picasso.get().load(url).into(object :Target{
         override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
             callback(e,null)
         }
