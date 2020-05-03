@@ -11,7 +11,6 @@ import com.moor.shelflyfe.api.nyt.NytService
 import com.moor.shelflyfe.api.nyt.models.ListResult
 import com.moor.shelflyfe.api.nyt.models.OverviewResult
 import com.moor.shelflyfe.api.nyt.models.SellerListInfo
-import com.moor.shelflyfe.api.nyt.models.Book as BestSeller
 import com.moor.shelflyfe.makeCall
 import com.moor.shelflyfe.api.gr.models.Book as BookDetail
 

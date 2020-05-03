@@ -48,7 +48,7 @@ class ListResult {
 
     @SerializedName("books")
     @Expose
-    var books: List<Book>? = null
+    var bestSellers: List<BestSeller>? = null
 
     @SerializedName("corrections")
     @Expose

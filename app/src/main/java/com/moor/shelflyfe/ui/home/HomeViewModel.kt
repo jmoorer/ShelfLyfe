@@ -3,7 +3,7 @@ package com.moor.shelflyfe.ui.home
 import androidx.lifecycle.*
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.api.nyt.models.OverviewResult
-import com.moor.shelflyfe.api.nyt.models.SellerListInfo
+import com.moor.shelflyfe.asBook
 
 
 class HomeViewModel(var repository: BookRepository) : ViewModel() {
@@ -18,18 +18,14 @@ class HomeViewModel(var repository: BookRepository) : ViewModel() {
     fun getFeatured(): LiveData<List<Book>>{
         return Transformations.map(bestSellersLists){ov->
             ov.lists!!
-               // ?.filter{l->l.listNameEncoded!!.contains("combined")}
-                .flatMap { l-> l.books!! }
-                //.sortedBy { b->b.rank }
+                .flatMap { l-> l.bestSellers!! }
                 .filter { b->b.rank==1 }
                 .distinctBy { b->b.primaryIsbn13 }
-                .map { b->Book(b.title!!,b.author!!,b.bookImage!!)}
-
+                .map { b->b.asBook()}
         }
     }
 
     fun getPopularList(): LiveData<Section> {
-
         return  popularBooks
     }
 
@@ -40,20 +36,23 @@ class HomeViewModel(var repository: BookRepository) : ViewModel() {
             bestSellersLists.postValue(books)
         }
         popularBooks.addSource(repository.getTopBooks()){books->
-            popularBooks.postValue(Section("Popular Ebooks",books.map { Book(it.name,it.artistName,it.artworkUrl) }))
+            popularBooks.postValue(Section("Popular Ebooks",books.map {b->b.asBook()}))
         }
+
         popularBooks.addSource(repository.getTopAudioBooks()){books->
-            popularBooks.postValue(Section("Popular Audiobooks",books.map { Book(it.name,it.artistName,it.artworkUrl) }))
+            popularBooks.postValue(Section("Popular Audiobooks",books.map {b->b.asBook() }))
         }
         popularBooks.addSource(repository.getBestSellerList("e-book-fiction")){
-            it.books?.let {books->
-                popularBooks.postValue(Section("Fiction",books.map { b->Book(b.title!!,b.author!!,b.bookImage!!)}))
+            it.bestSellers?.let { books->
+                popularBooks.postValue(Section("Fiction",books.map {b->b.asBook()}))
             }
         }
         popularBooks.addSource(repository.getBestSellerList("e-book-nonfiction")){
-            it.books?.let { books->
-                popularBooks.postValue(Section("Non Fiction",books.map { b->Book(b.title!!,b.author!!,b.bookImage!!)}))
+            it.bestSellers?.let { books->
+                popularBooks.postValue(Section("Non Fiction",books.map { b->b.asBook()}))
             }
         }
     }
+
+
 }

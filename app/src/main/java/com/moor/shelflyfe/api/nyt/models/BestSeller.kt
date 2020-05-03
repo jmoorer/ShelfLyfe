@@ -3,7 +3,7 @@ package com.moor.shelflyfe.api.nyt.models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class Book {
+class BestSeller {
     @SerializedName("age_group")
     @Expose
     var ageGroup: String? = null
