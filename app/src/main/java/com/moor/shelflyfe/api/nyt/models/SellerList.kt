@@ -38,6 +38,6 @@ class SellerList {
 
     @SerializedName("books")
     @Expose
-    var books: List<Book>? = null
+    var bestSellers: List<BestSeller>? = null
 
 }

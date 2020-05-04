@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@id/homeFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_home"
+        android:title="Home"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/exploreFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_search"
+        android:title="Explore"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/lib"
+        android:enabled="true"
+        android:icon="@drawable/ic_search"
+        android:title="Explore"
+        app:showAsAction="ifRoom" />
+
+</menu>
