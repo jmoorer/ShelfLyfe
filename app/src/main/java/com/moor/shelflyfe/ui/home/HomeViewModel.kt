@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.api.nyt.models.OverviewResult
 import com.moor.shelflyfe.asBook
+import com.moor.shelflyfe.ui.Section
 
 
 class HomeViewModel(var repository: BookRepository) : ViewModel() {
@@ -26,8 +27,16 @@ class HomeViewModel(var repository: BookRepository) : ViewModel() {
     }
 
     val popularBookList= liveData{
-        emit(Section("Popular Ebooks",repository.getTopBooks()!!.map{b->b.asBook()}))
-        emit(Section("Popular Audiobooks",repository.getTopAudioBooks()!!.map {b->b.asBook() }))
+        emit(
+            Section(
+                "Popular Ebooks",
+                repository.getTopBooks()!!.map { b -> b.asBook() })
+        )
+        emit(
+            Section(
+                "Popular Audiobooks",
+                repository.getTopAudioBooks()!!.map { b -> b.asBook() })
+        )
     }
 
     fun getPopularList(): LiveData<Section> {

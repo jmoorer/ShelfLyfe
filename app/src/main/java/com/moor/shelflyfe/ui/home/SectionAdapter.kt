@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.moor.shelflyfe.databinding.ItemSectionBinding
 import com.moor.shelflyfe.databinding.ItemSectionBookBinding
 import com.moor.shelflyfe.load
-
+import com.moor.shelflyfe.ui.Book
+import com.moor.shelflyfe.ui.Section
 
 
 class SectionAdapter(val sections:List<Section>):RecyclerView.Adapter<SectionAdapter.ViewHolder>(){

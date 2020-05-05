@@ -35,8 +35,8 @@ class BookRepository(
 
     suspend fun  getBestSellerList(name:String)=nytService.getListByType(name).results
 
-    suspend fun search(isbn:String?=null,author: String?=null,title:String?=null): GoogleResponse {
-       return googleBooksService.search("isbn:$isbn")
+    suspend fun search(q:String,isbn:String?=null,author: String?=null,title:String?=null): GoogleResponse {
+       return googleBooksService.search(q)
     }
 
 //    fun getBookDetails(isbn:String):LiveData<BookDetail>{

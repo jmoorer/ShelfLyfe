@@ -1,4 +1,4 @@
-package com.moor.shelflyfe.ui.home
+package com.moor.shelflyfe.ui
 
 
 

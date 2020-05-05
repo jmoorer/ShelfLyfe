@@ -1,59 +1,60 @@
 package com.moor.shelflyfe.ui.explore
 
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.*
-import android.widget.EditText
-import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.core.view.MenuItemCompat
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.moor.shelflyfe.R
+import androidx.recyclerview.widget.RecyclerView
+import com.mancj.materialsearchbar.MaterialSearchBar
 
 import com.moor.shelflyfe.databinding.ExploreFragmentBinding
-import com.moor.shelflyfe.ui.home.Category
-import com.moor.shelflyfe.ui.home.FeaturedAdapter
-import com.moor.shelflyfe.ui.home.HomeViewModel
-import com.moor.shelflyfe.ui.home.SpacesItemDecoration
+import com.moor.shelflyfe.ui.Book
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class ExploreFragment : Fragment() {
+class ExploreFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
 
 
     private lateinit var binding: ExploreFragmentBinding
     private  val viewModel: ExploreViewModel by viewModel()
-    val hvm:HomeViewModel by viewModel()
+    private  val results= arrayListOf<Book>()
+    private  val genreAdapter= GenreAdapter(GENERES)
+    private   val searchAdapter=SearchAdapter(results)
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel.searchResults().observe(viewLifecycleOwner, Observer { books->
+            this.results.clear()
+            this.results.addAll(books)
+            searchAdapter.notifyDataSetChanged()
+        })
+//
+//        viewModel.featured.observe(viewLifecycleOwner, Observer {books->
+//            binding.viewPager.adapter=
+//                FeaturedAdapter(books)
+//        })
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
         binding= ExploreFragmentBinding.inflate(inflater,container,false)
-        binding.categories.apply {
-            adapter= CategoryAdapter(
-                listOf(
-                    Category("Fiction"),
-                    Category("Non fiction"),
-                    Category("Science"),
-                    Category("Fiction"),
-                    Category("Non fiction"),
-                    Category("Science"),
-                    Category("Fiction"),
-                    Category("Non fiction"),
-                    Category("Science")
-
-                )
-            )
-            layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-            addItemDecoration(SpacesItemDecoration(8))
+        binding.genres.apply {
+            adapter= genreAdapter
+            layoutManager= LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
         }
-//        hvm.getFeatured().observe(viewLifecycleOwner, Observer {books->
-//            binding.viewPager.adapter= FeaturedAdapter(books)
-//        })
-       // binding.toolbar.inflateMenu(R.menu.explore_menu)
 
+        binding.results.apply {
+            adapter= searchAdapter
+            layoutManager= LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
+        }
+        binding.searchBar.setOnSearchActionListener(this)
         return binding.root
     }
 
@@ -63,8 +64,28 @@ class ExploreFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
+    override fun onButtonClicked(buttonCode: Int) {
+     //   TODO("Not yet implemented")
+    }
+
+    override fun onSearchStateChanged(enabled: Boolean) {
+        binding.flipper.showNext()
+//        if(enabled){
+//            binding.flipper.showNext()
+//        }else{
+//
+//        }
+    }
+
+    override fun onSearchConfirmed(text: CharSequence?) {
+        viewModel.search(text.toString())
+    }
+
 //    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 //        inflater.inflate(R.menu.explore_menu,menu);
 //    }
 
 }
+
+
+

@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="6dp"
     android:elevation="4dp"
-    app:cardBackgroundColor="@color/red_200"
+    app:cardBackgroundColor="@color/accent"
     android:padding="24dp"
     >
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +18,10 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="16dp"
           android:layout_marginEnd="16dp"
+          android:text="@string/place_holder_text"
+          android:gravity="center"
+          android:textSize="18sp"
+          android:textColor="@color/searchBarTextColorDark"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"

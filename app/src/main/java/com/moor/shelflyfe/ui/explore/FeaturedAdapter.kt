@@ -1,12 +1,12 @@
-package com.moor.shelflyfe.ui.home
+package com.moor.shelflyfe.ui.explore
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.moor.shelflyfe.databinding.ItemFeaturedBinding
-import com.moor.shelflyfe.extractPallete
 import com.moor.shelflyfe.load
 import com.moor.shelflyfe.preloadImage
+import com.moor.shelflyfe.ui.Book
 
 class FeaturedAdapter(val books: List<Book>): RecyclerView.Adapter<FeaturedAdapter.ViewHolder>() {
 
@@ -17,7 +17,7 @@ class FeaturedAdapter(val books: List<Book>): RecyclerView.Adapter<FeaturedAdapt
     }
     class ViewHolder(val binding: ItemFeaturedBinding):RecyclerView.ViewHolder(binding.root){
 
-        fun bind(book :Book)= binding.apply {
+        fun bind(book : Book)= binding.apply {
             bookTitle.text=book.title
             coverImage.load(book.imageUrl){ exception, palette ->
                 palette?.vibrantSwatch?.let { swatch ->

@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.moor.shelflyfe.databinding.HomeFragmentBinding
+import com.moor.shelflyfe.ui.Section
+import com.moor.shelflyfe.ui.explore.FeaturedAdapter
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -30,7 +32,8 @@ class HomeFragment : Fragment() {
     ): View? {
 
         viewModel.featured.observe(viewLifecycleOwner, Observer {books->
-            binding.viewPager.adapter= FeaturedAdapter(books)
+            binding.viewPager.adapter=
+                FeaturedAdapter(books)
         })
 //        viewModel.getPopularList().observe(viewLifecycleOwner, Observer { section->
 //            sections.add(section)

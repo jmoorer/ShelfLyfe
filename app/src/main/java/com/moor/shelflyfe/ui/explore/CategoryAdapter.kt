@@ -4,8 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.moor.shelflyfe.databinding.ItemCategoryBinding
-import com.moor.shelflyfe.ui.home.Category
-import com.moor.shelflyfe.ui.home.Section
+import com.moor.shelflyfe.ui.Category
 
 
 class CategoryAdapter(val categories:List<Category>): RecyclerView.Adapter<CategoryAdapter.ViewHolder>(){
