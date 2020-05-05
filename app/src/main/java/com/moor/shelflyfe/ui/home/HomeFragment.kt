@@ -29,13 +29,13 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        viewModel.getFeatured().observe(viewLifecycleOwner, Observer {books->
+        viewModel.featured.observe(viewLifecycleOwner, Observer {books->
             binding.viewPager.adapter= FeaturedAdapter(books)
         })
-        viewModel.getPopularList().observe(viewLifecycleOwner, Observer { section->
-            sections.add(section)
-            sectionAdapter.notifyDataSetChanged()
-        })
+//        viewModel.getPopularList().observe(viewLifecycleOwner, Observer { section->
+//            sections.add(section)
+//            sectionAdapter.notifyDataSetChanged()
+//        })
         binding = HomeFragmentBinding.inflate(inflater,container,false)
         binding.sections.apply{
             adapter= sectionAdapter

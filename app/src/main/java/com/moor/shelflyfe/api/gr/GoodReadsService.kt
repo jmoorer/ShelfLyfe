@@ -15,9 +15,9 @@ interface GoodReadsService {
     }
 
     @GET("book/isbn/{isbn}?format=xml")
-    fun getBookDetails(@Path("isbn")isbn:String):Call<BookResponse>
+    suspend fun getBookDetails(@Path("isbn")isbn:String):BookResponse
 
 
     @GET("author/show.xml")
-    fun getAuthorDetails(@Query("id")id:String):Call<AuthorResponse>
+    suspend fun getAuthorDetails(@Query("id")id:String):AuthorResponse
 }

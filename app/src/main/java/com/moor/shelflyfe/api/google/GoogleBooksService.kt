@@ -12,6 +12,6 @@ interface GoogleBooksService {
     }
 
     @GET("books/v1/volumes")
-    fun search(@Query("q") isbn:String):Call<GoogleResponse>
+   suspend fun search(@Query("q") q:String):GoogleResponse
 
 }

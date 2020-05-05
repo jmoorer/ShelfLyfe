@@ -12,17 +12,22 @@ class HomeViewModel(var repository: BookRepository) : ViewModel() {
     private val popularBooks  = MediatorLiveData<Section>()
 
     init {
-        loadData()
+        //loadData()
+
     }
 
-    fun getFeatured(): LiveData<List<Book>>{
-        return Transformations.map(bestSellersLists){ov->
-            ov.lists!!
-                .flatMap { l-> l.bestSellers!! }
-                .filter { b->b.rank==1 }
-                .distinctBy { b->b.primaryIsbn13 }
-                .map { b->b.asBook()}
-        }
+
+    val featured= liveData {
+        emit(repository.getBestSellers()!!.lists!!.flatMap { l-> l.bestSellers!! }
+            .filter { b->b.rank==1 }
+            .distinctBy { b->b.primaryIsbn13 }
+            .map { b->b.asBook()}
+        )
+    }
+
+    val popularBookList= liveData{
+        emit(Section("Popular Ebooks",repository.getTopBooks()!!.map{b->b.asBook()}))
+        emit(Section("Popular Audiobooks",repository.getTopAudioBooks()!!.map {b->b.asBook() }))
     }
 
     fun getPopularList(): LiveData<Section> {
@@ -32,26 +37,26 @@ class HomeViewModel(var repository: BookRepository) : ViewModel() {
 
 
     fun loadData(){
-        bestSellersLists.addSource(repository.getBestSellers()){books->
-            bestSellersLists.postValue(books)
-        }
-        popularBooks.addSource(repository.getTopBooks()){books->
-            popularBooks.postValue(Section("Popular Ebooks",books.map {b->b.asBook()}))
-        }
-
-        popularBooks.addSource(repository.getTopAudioBooks()){books->
-            popularBooks.postValue(Section("Popular Audiobooks",books.map {b->b.asBook() }))
-        }
-        popularBooks.addSource(repository.getBestSellerList("e-book-fiction")){
-            it.bestSellers?.let { books->
-                popularBooks.postValue(Section("Fiction",books.map {b->b.asBook()}))
-            }
-        }
-        popularBooks.addSource(repository.getBestSellerList("e-book-nonfiction")){
-            it.bestSellers?.let { books->
-                popularBooks.postValue(Section("Non Fiction",books.map { b->b.asBook()}))
-            }
-        }
+//        bestSellersLists.addSource(repository.getBestSellers()){books->
+//            bestSellersLists.postValue(books)
+//        }
+//        popularBooks.addSource(repository.getTopBooks()){books->
+//            popularBooks.postValue(Section("Popular Ebooks",books.map {b->b.asBook()}))
+//        }
+//
+//        popularBooks.addSource(repository.getTopAudioBooks()){books->
+//            popularBooks.postValue(Section("Popular Audiobooks",books.map {b->b.asBook() }))
+//        }
+//        popularBooks.addSource(repository.getBestSellerList("e-book-fiction")){
+//            it.bestSellers?.let { books->
+//                popularBooks.postValue(Section("Fiction",books.map {b->b.asBook()}))
+//            }
+//        }
+//        popularBooks.addSource(repository.getBestSellerList("e-book-nonfiction")){
+//            it.bestSellers?.let { books->
+//                popularBooks.postValue(Section("Non Fiction",books.map { b->b.asBook()}))
+//            }
+//        }
     }
 
 

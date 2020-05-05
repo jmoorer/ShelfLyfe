@@ -18,11 +18,11 @@ interface NytService {
     }
 
     @GET("lists/overview.json")
-    fun getOverview(): Call<NytResponse<OverviewResult>>
+    suspend fun getOverview(): NytResponse<OverviewResult>
 
     @GET("lists/names.json")
-    fun getLists():Call<NytResponse<List<SellerListInfo>>>
+    suspend fun getLists():NytResponse<List<SellerListInfo>>
 
     @GET("lists/current/{type}.json")
-    fun getListByType(@Path("type") type:String):Call<NytResponse<ListResult>>
+    suspend fun getListByType(@Path("type") type:String):NytResponse<ListResult>
 }

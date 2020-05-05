@@ -10,4 +10,8 @@
         android:name="com.moor.shelflyfe.ui.home.HomeFragment"
         android:label="home_fragment"
         tools:layout="@layout/home_fragment" />
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="com.moor.shelflyfe.ui.explore.ExploreFragment"
+        android:label="ExploreFragment" />
 </navigation>

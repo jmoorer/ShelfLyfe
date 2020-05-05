@@ -8,6 +8,7 @@ import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.moor.shelflyfe.R
 
 import com.moor.shelflyfe.api.BookRepository
@@ -27,8 +28,10 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host)
         val appBarConfiguration = AppBarConfiguration(navController.graph)
 
-        findViewById<Toolbar>(R.id.toolbar)
-            .setupWithNavController(navController, appBarConfiguration)
+        findViewById<BottomNavigationView>(R.id.bottomNav).apply {
+            setupWithNavController(navController)
+        }
+
 
     }
 }
