@@ -47,8 +47,8 @@ fun ResultsItem.asBook(): Book {
 fun ItemsItem.asBook(): Book {
     return Book(
         this.volumeInfo.title,
-        this.volumeInfo.authors!!.first(),
-        this.volumeInfo.imageLinks.thumbnail.replace("http", "https")
+        this.volumeInfo.authors?.first()?:"??",
+        this.volumeInfo.imageLinks?.thumbnail?.replace("http", "https")
     )
 }
 fun String.toDisplayCase(): String {

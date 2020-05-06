@@ -12,18 +12,20 @@ class FeaturedAdapter(val books: List<Book>): RecyclerView.Adapter<FeaturedAdapt
 
     init {
         books.forEach { book->
-            preloadImage(book.imageUrl)
+            book.imageUrl?.let { preloadImage(it) }
         }
     }
     class ViewHolder(val binding: ItemFeaturedBinding):RecyclerView.ViewHolder(binding.root){
 
         fun bind(book : Book)= binding.apply {
             bookTitle.text=book.title
-            coverImage.load(book.imageUrl){ exception, palette ->
-                palette?.vibrantSwatch?.let { swatch ->
-                    root.setBackgroundColor(swatch.rgb)
-                    bookTitle.setTextColor(swatch.titleTextColor)
-                    authorName.setTextColor(swatch.bodyTextColor)
+            book.imageUrl?.let {
+                coverImage.load(it){ exception, palette ->
+                    palette?.vibrantSwatch?.let { swatch ->
+                        root.setBackgroundColor(swatch.rgb)
+                        bookTitle.setTextColor(swatch.titleTextColor)
+                        authorName.setTextColor(swatch.bodyTextColor)
+                    }
                 }
             }
             authorName.text = "By ${book.author}"

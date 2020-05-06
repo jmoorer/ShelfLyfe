@@ -14,17 +14,23 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.moor.shelflyfe.R
 import com.moor.shelflyfe.databinding.ExploreFragmentBinding
-import com.moor.shelflyfe.ui.Section
+import com.moor.shelflyfe.toDisplayCase
+import com.moor.shelflyfe.ui.booklist.BookListViewModel
 import com.moor.shelflyfe.ui.home.SectionAdapter
-import org.koin.android.viewmodel.ext.android.viewModel
+import com.moor.shelflyfe.ui.list.ListFragmentDirections
+import com.moor.shelflyfe.ui.list.ListItem
+import com.moor.shelflyfe.ui.list.ListViewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 
 class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
 
     private lateinit var binding: ExploreFragmentBinding
-    private  val viewModel: ExploreViewModel by viewModel()
-    private val  sections = arrayListOf<Section>()
+    private  val viewModel: ExploreViewModel by sharedViewModel()
+    private  val listViewModel:ListViewModel by sharedViewModel()
+    private  val bookListViewModel:BookListViewModel by sharedViewModel()
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -33,9 +39,8 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             binding.viewPager.adapter= FeaturedAdapter(books)
         })
 
-        viewModel.sections.observe(viewLifecycleOwner, Observer { section->
-            sections.add(section)
-            binding.sections.adapter?.notifyDataSetChanged()
+        viewModel.sections.observe(viewLifecycleOwner, Observer { sections->
+            binding.sections.adapter=SectionAdapter(sections)
         })
     }
     override fun onCreateView(
@@ -50,7 +55,7 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         }
 
         binding.sections.apply {
-            adapter= SectionAdapter(sections)
+
             layoutManager= LinearLayoutManager(context)
             addItemDecoration(
                 DividerItemDecoration(
@@ -58,11 +63,34 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                     DividerItemDecoration.VERTICAL
                 ))
         }
+        binding.genres.setOnClickListener {
+            val items=GENERES.map { ListItem(it.key,it.key.toDisplayCase()) }.toTypedArray()
+            val action=ExploreFragmentDirections.actionOpenList(items,"Genres")
+            val navController = findNavController();
+            navController.navigate(action)
+            val dest= navController.getBackStackEntry(R.id.listFragment)
+            listViewModel.getSelected().observe(dest, Observer { item->
+               getBooksByGenre(item.key)
+            })
+        }
+        binding.bestSellers.setOnClickListener {
+            val items= listOf(ListItem("AB","AB")).toTypedArray()
+            val action=ExploreFragmentDirections.actionOpenList(items,"Best Seller Lists")
+            val navController = findNavController();
+            navController.navigate(action)
+            val dest= navController.getBackStackEntry(R.id.listFragment)
+            listViewModel.getSelected().observe(dest, Observer { item->
 
-
-
+            })
+        }
 
         return binding.root
+    }
+
+    private fun getBooksByGenre(key: String) {
+        bookListViewModel.loadBooksByGenre(key)
+        val action=ListFragmentDirections.actionListFragmentToBookListFragment(key.toDisplayCase())
+        findNavController().navigate(action)
     }
 
 
@@ -80,10 +108,6 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         return false
     }
 
-
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.explore_menu,menu);
-//    }
 
 }
 

@@ -6,8 +6,10 @@ import com.moor.shelflyfe.api.google.GoogleBooksService
 import com.moor.shelflyfe.api.gr.GoodReadsService
 import com.moor.shelflyfe.api.itunes.ItunesService
 import com.moor.shelflyfe.api.nyt.NytService
+import com.moor.shelflyfe.ui.booklist.BookListViewModel
 import com.moor.shelflyfe.ui.explore.ExploreViewModel
 import com.moor.shelflyfe.ui.home.HomeViewModel
+import com.moor.shelflyfe.ui.list.ListViewModel
 import com.moor.shelflyfe.ui.search.SearchViewModel
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
@@ -79,4 +81,6 @@ val applicationModule = module(override = true) {
     viewModel { HomeViewModel(get()) }
     viewModel { ExploreViewModel(get()) }
     viewModel { SearchViewModel(get()) }
+    viewModel { ListViewModel() }
+    viewModel { BookListViewModel(get()) }
 }

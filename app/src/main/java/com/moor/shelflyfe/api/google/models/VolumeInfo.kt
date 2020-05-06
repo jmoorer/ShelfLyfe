@@ -21,7 +21,7 @@ data class VolumeInfo(@SerializedName("industryIdentifiers")
                       @SerializedName("title")
                       val title: String = "",
                       @SerializedName("imageLinks")
-                      val imageLinks: ImageLinks,
+                      val imageLinks: ImageLinks?=null,
                       @SerializedName("subtitle")
                       val subtitle: String = "",
                       @SerializedName("panelizationSummary")

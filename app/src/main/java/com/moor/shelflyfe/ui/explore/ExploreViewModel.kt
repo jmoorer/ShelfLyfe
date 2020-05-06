@@ -5,21 +5,18 @@ import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.asBook
 import com.moor.shelflyfe.ui.Book
 import com.moor.shelflyfe.ui.Section
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class ExploreViewModel(var repository: BookRepository) : ViewModel() {
 
-
-    var topAudioBooks= liveData {
-        emit(repository.getTopAudioBooks()!!.map { it.asBook() })
-    }
-    var topEbooks=liveData {
-        emit(repository.getTopBooks()!!.map { it.asBook() })
-    }
-
-    var sections = liveData {
-        emit(Section("Top Ebooks",repository.getTopAudioBooks()!!.map { it.asBook() }))
-        emit(Section("Top Audiobooks",repository.getTopAudioBooks()!!.map { it.asBook() }))
+    var sections= MutableLiveData<List<Section>>()
+    init {
+        viewModelScope.launch {
+            val ebooks = async {  Section("Top Ebooks",repository.getTopAudioBooks()!!.map { it.asBook() }) }
+            val audioBooks = async { Section("Top Audiobooks",repository.getTopAudioBooks()!!.map { it.asBook() }) }
+            sections.value = listOf(ebooks.await(),audioBooks.await())
+        }
     }
 
     val featured= liveData {
@@ -29,4 +26,6 @@ class ExploreViewModel(var repository: BookRepository) : ViewModel() {
             .map { b->b.asBook()}
         )
     }
+
+
 }

@@ -28,46 +28,48 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/red_200"
+            android:background="@drawable/bottom_border"
             android:orientation="horizontal"
+            android:minHeight="100dp"
             />
+
+        <TextView
+            android:id="@+id/genres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_border"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:text="Genres"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/best_sellers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_border"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:text="Best Sellers"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/sections"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/genres"
-            android:text="Genres"
-            android:paddingVertical="8dp"
-            android:paddingHorizontal="16dp"
-            android:textSize="18sp"
-            android:background="@color/primary"
-            android:textColor="@color/accent"
-            />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/white" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/best_sellers"
-            android:text="Best Sellers"
-            android:paddingVertical="8dp"
-            android:paddingHorizontal="16dp"
-            android:textSize="18sp"
-            android:background="@color/primary"
-            android:textColor="@color/accent"
-            />
+
+
 
 
     </LinearLayout>

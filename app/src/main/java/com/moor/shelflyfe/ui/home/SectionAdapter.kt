@@ -41,7 +41,7 @@ class SubSectionAdapter(val books: List<Book>):RecyclerView.Adapter<SubSectionAd
 
     class ViewHolder(val binding: ItemSectionBookBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(book: Book){
-            binding.bookCover.load(book.imageUrl)
+            book.imageUrl?.let { binding.bookCover.load(it) }
         }
     }
 

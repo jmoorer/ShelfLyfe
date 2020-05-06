@@ -1,4 +1,4 @@
-package com.moor.shelflyfe.ui.explore
+package com.moor.shelflyfe.ui.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,7 +13,7 @@ class SearchAdapter(var books: List<Book>): RecyclerView.Adapter<SearchAdapter.V
         fun bind(book: Book ) = binding.apply {
             binding.title.text= book.title
             binding.author.text= book.author
-            binding.cover.load(book.imageUrl)
+            book.imageUrl?.let { binding.cover.load(it) }
         }
     }
 

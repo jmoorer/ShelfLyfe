@@ -1,15 +1,20 @@
-package com.moor.shelflyfe.ui
+package com.moor.shelflyfe.ui.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.moor.shelflyfe.databinding.ItemTextBinding
 
-class ListAdapter<T>(var title:String?=null,val items:List<T> ,val selector:(T)->String):RecyclerView.Adapter<ListAdapter<T>.ViewHolder>() {
+class ListAdapter(val items:Array<ListItem>):RecyclerView.Adapter<ListAdapter.ViewHolder>() {
+
+    var listener:((ListItem)->Unit)?=null
 
     inner class ViewHolder(val binding:ItemTextBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(item:T){
-           binding.textView.text= selector(item)
+        fun bind(item:ListItem){
+           binding.textView.text = item.value
+            binding.root.setOnClickListener {
+                listener?.invoke(item)
+            }
         }
     }
 

@@ -1,24 +1,15 @@
 package com.moor.shelflyfe.ui.search
 
-import android.app.Dialog
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.preference.DialogPreference
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mancj.materialsearchbar.MaterialSearchBar
 
-import com.moor.shelflyfe.R
 import com.moor.shelflyfe.databinding.SearchFragmentBinding
 import com.moor.shelflyfe.ui.Book
-import com.moor.shelflyfe.ui.explore.GENERES
-import com.moor.shelflyfe.ui.explore.GenreAdapter
-import com.moor.shelflyfe.ui.explore.SearchAdapter
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
@@ -27,7 +18,8 @@ class SearchFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
     private val viewModel: SearchViewModel by viewModel()
     private lateinit var binding:SearchFragmentBinding
     private  val results= arrayListOf<Book>()
-    private   val searchAdapter= SearchAdapter(results)
+    private   val searchAdapter=
+        SearchAdapter(results)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
