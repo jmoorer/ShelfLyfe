@@ -4,24 +4,22 @@ import androidx.lifecycle.*
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.asBook
 import com.moor.shelflyfe.ui.Book
+import com.moor.shelflyfe.ui.Section
 import kotlinx.coroutines.launch
 
 class ExploreViewModel(var repository: BookRepository) : ViewModel() {
 
-    private var results= MutableLiveData<List<Book>>()
-
-    fun searchResults() :LiveData<List<Book>> = results
-
-    fun search(q:String)=viewModelScope.launch {
-        val books=repository.search(q).items!!.map { it.asBook() }
-        results.postValue(books)
-    }
 
     var topAudioBooks= liveData {
         emit(repository.getTopAudioBooks()!!.map { it.asBook() })
     }
     var topEbooks=liveData {
         emit(repository.getTopBooks()!!.map { it.asBook() })
+    }
+
+    var sections = liveData {
+        emit(Section("Top Ebooks",repository.getTopAudioBooks()!!.map { it.asBook() }))
+        emit(Section("Top Audiobooks",repository.getTopAudioBooks()!!.map { it.asBook() }))
     }
 
     val featured= liveData {

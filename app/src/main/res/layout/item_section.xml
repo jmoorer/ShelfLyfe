@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/primary">
 
     <TextView
         android:id="@+id/section_title"
@@ -15,7 +16,8 @@
         android:paddingLeft="8dp"
         android:paddingBottom="8dp"
         android:paddingTop="16dp"
-        android:textSize="24sp" />
+        android:textSize="18sp"
+        android:textColor="@color/white"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/section_books"

@@ -36,11 +36,11 @@
 
     <ImageView
         android:id="@+id/cover_image"
-        android:layout_width="150dp"
-        android:layout_height="200dp"
+        android:layout_width="125dp"
+        android:layout_height="175dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

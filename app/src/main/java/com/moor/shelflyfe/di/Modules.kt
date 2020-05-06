@@ -8,6 +8,7 @@ import com.moor.shelflyfe.api.itunes.ItunesService
 import com.moor.shelflyfe.api.nyt.NytService
 import com.moor.shelflyfe.ui.explore.ExploreViewModel
 import com.moor.shelflyfe.ui.home.HomeViewModel
+import com.moor.shelflyfe.ui.search.SearchViewModel
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import okhttp3.HttpUrl
@@ -77,4 +78,5 @@ val applicationModule = module(override = true) {
     factory { BookRepository(get(),get(),get(),get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { ExploreViewModel(get()) }
+    viewModel { SearchViewModel(get()) }
 }

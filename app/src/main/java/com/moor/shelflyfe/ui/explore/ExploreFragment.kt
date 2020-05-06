@@ -1,41 +1,42 @@
 package com.moor.shelflyfe.ui.explore
 
 
-import android.graphics.Rect
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.mancj.materialsearchbar.MaterialSearchBar
-
+import com.moor.shelflyfe.R
 import com.moor.shelflyfe.databinding.ExploreFragmentBinding
-import com.moor.shelflyfe.ui.Book
+import com.moor.shelflyfe.ui.Section
+import com.moor.shelflyfe.ui.home.SectionAdapter
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class ExploreFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
+
+class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
 
     private lateinit var binding: ExploreFragmentBinding
     private  val viewModel: ExploreViewModel by viewModel()
-    private  val results= arrayListOf<Book>()
-    private  val genreAdapter= GenreAdapter(GENERES)
-    private   val searchAdapter=SearchAdapter(results)
+    private val  sections = arrayListOf<Section>()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.searchResults().observe(viewLifecycleOwner, Observer { books->
-            this.results.clear()
-            this.results.addAll(books)
-            searchAdapter.notifyDataSetChanged()
+
+        viewModel.featured.observe(viewLifecycleOwner, Observer {books->
+            binding.viewPager.adapter= FeaturedAdapter(books)
         })
-//
-//        viewModel.featured.observe(viewLifecycleOwner, Observer {books->
-//            binding.viewPager.adapter=
-//                FeaturedAdapter(books)
-//        })
+
+        viewModel.sections.observe(viewLifecycleOwner, Observer { section->
+            sections.add(section)
+            binding.sections.adapter?.notifyDataSetChanged()
+        })
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,18 +44,24 @@ class ExploreFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
     ): View? {
 
         binding= ExploreFragmentBinding.inflate(inflater,container,false)
-        binding.genres.apply {
-            adapter= genreAdapter
-            layoutManager= LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
+        binding.toolbar.apply {
+            inflateMenu(R.menu.explore_menu)
+            setOnMenuItemClickListener(this@ExploreFragment)
         }
 
-        binding.results.apply {
-            adapter= searchAdapter
+        binding.sections.apply {
+            adapter= SectionAdapter(sections)
             layoutManager= LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    DividerItemDecoration.VERTICAL
+                ))
         }
-        binding.searchBar.setOnSearchActionListener(this)
+
+
+
+
         return binding.root
     }
 
@@ -64,22 +71,15 @@ class ExploreFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
         setHasOptionsMenu(true)
     }
 
-    override fun onButtonClicked(buttonCode: Int) {
-     //   TODO("Not yet implemented")
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            R.id.action_search->{
+              findNavController().navigate(R.id.action_exploreFragment_to_searchFragment)
+            }
+        }
+        return false
     }
 
-    override fun onSearchStateChanged(enabled: Boolean) {
-        binding.flipper.showNext()
-//        if(enabled){
-//            binding.flipper.showNext()
-//        }else{
-//
-//        }
-    }
-
-    override fun onSearchConfirmed(text: CharSequence?) {
-        viewModel.search(text.toString())
-    }
 
 //    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 //        inflater.inflate(R.menu.explore_menu,menu);
