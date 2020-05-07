@@ -10,12 +10,16 @@ import com.moor.shelflyfe.ui.Book
 
 class FeaturedAdapter(val books: List<Book>): RecyclerView.Adapter<FeaturedAdapter.ViewHolder>() {
 
+    interface  OnItemClickListner{
+        fun onClick(book:Book)
+    }
+    var listener:OnItemClickListner?=null
     init {
         books.forEach { book->
             book.imageUrl?.let { preloadImage(it) }
         }
     }
-    class ViewHolder(val binding: ItemFeaturedBinding):RecyclerView.ViewHolder(binding.root){
+    inner class ViewHolder(val binding: ItemFeaturedBinding):RecyclerView.ViewHolder(binding.root){
 
         fun bind(book : Book)= binding.apply {
             bookTitle.text=book.title
@@ -29,6 +33,9 @@ class FeaturedAdapter(val books: List<Book>): RecyclerView.Adapter<FeaturedAdapt
                 }
             }
             authorName.text = "By ${book.author}"
+            root.setOnClickListener {
+                listener?.onClick(book)
+            }
         }
     }
 

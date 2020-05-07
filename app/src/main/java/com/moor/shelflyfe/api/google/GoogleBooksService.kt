@@ -11,7 +11,7 @@ interface GoogleBooksService {
         val baseUrl="https://www.googleapis.com/"
     }
 
-    @GET("books/v1/volumes")
+    @GET("books/v1/volumes?maxResults=40")
    suspend fun search(@Query("q") q:String):GoogleResponse
 
 }

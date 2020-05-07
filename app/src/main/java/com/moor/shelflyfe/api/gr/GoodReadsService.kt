@@ -1,7 +1,7 @@
 package com.moor.shelflyfe.api.gr
 
 
-import com.moor.shelflyfe.api.gr.models.AuthorResponse
+//import com.moor.shelflyfe.api.gr.models.AuthorResponse
 import com.moor.shelflyfe.api.gr.models.BookResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -18,6 +18,6 @@ interface GoodReadsService {
     suspend fun getBookDetails(@Path("isbn")isbn:String):BookResponse
 
 
-    @GET("author/show.xml")
-    suspend fun getAuthorDetails(@Query("id")id:String):AuthorResponse
+//    @GET("author/show.xml")
+//    suspend fun getAuthorDetails(@Query("id")id:String):AuthorResponse
 }

@@ -3,16 +3,10 @@ package com.moor.shelflyfe.api
 import com.moor.shelflyfe.api.google.GoogleBooksService
 import com.moor.shelflyfe.api.google.models.GoogleResponse
 import com.moor.shelflyfe.api.gr.GoodReadsService
-import com.moor.shelflyfe.api.gr.models.Author
+//import com.moor.shelflyfe.api.gr.models.AuthorResponse
+import com.moor.shelflyfe.api.gr.models.BookResponse
 import com.moor.shelflyfe.api.itunes.ItunesService
-import com.moor.shelflyfe.api.itunes.models.ResultsItem
 import com.moor.shelflyfe.api.nyt.NytService
-import com.moor.shelflyfe.api.nyt.models.ListResult
-import com.moor.shelflyfe.api.nyt.models.OverviewResult
-import com.moor.shelflyfe.api.nyt.models.SellerListInfo
-import com.moor.shelflyfe.asBook
-import com.moor.shelflyfe.makeCall
-import com.moor.shelflyfe.api.gr.models.Book as BookDetail
 
 class BookRepository(
     val nytService: NytService,
@@ -25,11 +19,9 @@ class BookRepository(
 
     suspend fun getTopBooks()=itunesService.getTopBooks().feed.results
 
-
-
     suspend fun getTopAudioBooks()=itunesService.getTopBooks().feed.results
 
-    suspend fun getCategories()= nytService.getLists()
+    suspend fun getBestSellerList()= nytService.getLists()
 
     suspend fun getBestSellers()= nytService.getOverview().results
 
@@ -39,23 +31,13 @@ class BookRepository(
        return googleBooksService.search(q)
     }
 
-//    fun getBookDetails(isbn:String):LiveData<BookDetail>{
-//        val details= MutableLiveData<BookDetail>()
-//        goodReadsService.getBookDetails(isbn).makeCall { throwable, response ->
-//            response?.body()?.let{
-//                details.value=it.book
-//            }
-//        }
-//        return details
+    suspend fun getBookDetails(isbn:String): BookResponse {
+        return goodReadsService.getBookDetails(isbn)
+    }
+
+//    suspend fun getAuthor(id:String): AuthorResponse {
+//        return goodReadsService.getAuthorDetails(id)
 //    }
 
-//    fun getAuthor(id:String):LiveData<Author>{
-//        val author = MutableLiveData<Author>()
-//        goodReadsService.getAuthorDetails(id).makeCall { throwable, response ->
-//            response?.body()?.let {
-//                author.value = it.author
-//            }
-//        }
-//        return  author
-//    }
+
 }

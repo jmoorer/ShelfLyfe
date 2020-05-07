@@ -5,7 +5,7 @@ import com.tickaroo.tikxml.annotation.PropertyElement
 import com.tickaroo.tikxml.annotation.Xml
 
 @Xml(name = "author")
-class Author {
+class Author2 {
 
     @PropertyElement
     var id:String?=null
@@ -36,5 +36,5 @@ class Author {
 @Xml
 class Books{
     @Element
-    var book:List<Book>?=null
+    var book:List<BookData>?=null
 }

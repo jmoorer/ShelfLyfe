@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.moor.shelflyfe.R
 import com.moor.shelflyfe.databinding.ExploreFragmentBinding
 import com.moor.shelflyfe.toDisplayCase
+import com.moor.shelflyfe.ui.Book
 import com.moor.shelflyfe.ui.booklist.BookListViewModel
 import com.moor.shelflyfe.ui.home.SectionAdapter
 import com.moor.shelflyfe.ui.list.ListFragmentDirections
@@ -23,24 +24,34 @@ import com.moor.shelflyfe.ui.list.ListViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 
-class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener {
+class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener,
+    FeaturedAdapter.OnItemClickListner {
 
 
     private lateinit var binding: ExploreFragmentBinding
     private  val viewModel: ExploreViewModel by sharedViewModel()
     private  val listViewModel:ListViewModel by sharedViewModel()
     private  val bookListViewModel:BookListViewModel by sharedViewModel()
+    private  var bestSellerList= listOf<ListItem>()
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         viewModel.featured.observe(viewLifecycleOwner, Observer {books->
-            binding.viewPager.adapter= FeaturedAdapter(books)
+            binding.viewPager.adapter= FeaturedAdapter(books).apply {
+                listener= this@ExploreFragment
+            }
         })
 
         viewModel.sections.observe(viewLifecycleOwner, Observer { sections->
             binding.sections.adapter=SectionAdapter(sections)
+        })
+
+        viewModel.bestSellerList.observe(viewLifecycleOwner, Observer {  lists->
+             lists?.let {
+                 this.bestSellerList =  it.map { ListItem(it.listNameEncoded!!,it.displayName!!) }.toMutableList()
+            }
         })
     }
     override fun onCreateView(
@@ -74,13 +85,13 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             })
         }
         binding.bestSellers.setOnClickListener {
-            val items= listOf(ListItem("AB","AB")).toTypedArray()
-            val action=ExploreFragmentDirections.actionOpenList(items,"Best Seller Lists")
+
+            val action=ExploreFragmentDirections.actionOpenList(bestSellerList.toTypedArray(),"Best Seller Lists")
             val navController = findNavController();
             navController.navigate(action)
             val dest= navController.getBackStackEntry(R.id.listFragment)
             listViewModel.getSelected().observe(dest, Observer { item->
-
+                getBooksByBestSellerList(item)
             })
         }
 
@@ -93,6 +104,11 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         findNavController().navigate(action)
     }
 
+    fun getBooksByBestSellerList(item: ListItem){
+        bookListViewModel.loadBooksByBestSellerList(item.key)
+        val action=ListFragmentDirections.actionListFragmentToBookListFragment(item.value)
+        findNavController().navigate(action)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,6 +122,12 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
         }
         return false
+    }
+
+    override fun onClick(book: Book) {
+        val action=ExploreFragmentDirections.actionExploreFragmentToBookDetailFragment(book.isbn)
+        findNavController().navigate(action)
+
     }
 
 

@@ -34,6 +34,7 @@ fun BestSeller.asBook(): Book {
     return Book(
         this.title!!,
         this.author!!,
+        this.primaryIsbn13?:"",
         this.bookImage!!
     )
 }
@@ -41,6 +42,7 @@ fun ResultsItem.asBook(): Book {
     return Book(
         this.name,
         this.artistName,
+        "",
         this.artworkUrl
     )
 }
@@ -48,6 +50,7 @@ fun ItemsItem.asBook(): Book {
     return Book(
         this.volumeInfo.title,
         this.volumeInfo.authors?.first()?:"??",
+        this.volumeInfo.industryIdentifiers?.first { it.identifier=="ISBN_13" }?.identifier?:"",
         this.volumeInfo.imageLinks?.thumbnail?.replace("http", "https")
     )
 }

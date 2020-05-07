@@ -6,7 +6,7 @@ import com.tickaroo.tikxml.annotation.Xml
 
 
 @Xml
-class Book {
+class BookData {
 
     @PropertyElement
     var id:String?=null
@@ -53,8 +53,8 @@ class Book {
 
 }
 
-@Xml
-class  Authors{
-    @Element
-    var author :Author? = null
-}
+//@Xml
+//class  Authors{
+//    @Element
+//    var author :Author? = null
+//}

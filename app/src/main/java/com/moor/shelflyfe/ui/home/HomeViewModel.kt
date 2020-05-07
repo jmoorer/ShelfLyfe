@@ -1,10 +1,12 @@
 package com.moor.shelflyfe.ui.home
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.api.nyt.models.OverviewResult
 import com.moor.shelflyfe.asBook
 import com.moor.shelflyfe.ui.Section
+import kotlinx.coroutines.launch
 
 
 class HomeViewModel(var repository: BookRepository) : ViewModel() {
@@ -13,7 +15,6 @@ class HomeViewModel(var repository: BookRepository) : ViewModel() {
     private val popularBooks  = MediatorLiveData<Section>()
 
     init {
-        //loadData()
 
     }
 

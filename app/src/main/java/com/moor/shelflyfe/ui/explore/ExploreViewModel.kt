@@ -3,7 +3,6 @@ package com.moor.shelflyfe.ui.explore
 import androidx.lifecycle.*
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.asBook
-import com.moor.shelflyfe.ui.Book
 import com.moor.shelflyfe.ui.Section
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -25,6 +24,10 @@ class ExploreViewModel(var repository: BookRepository) : ViewModel() {
             .distinctBy { b->b.primaryIsbn13 }
             .map { b->b.asBook()}
         )
+    }
+
+    var bestSellerList= liveData {
+        emit(repository.getBestSellerList().results)
     }
 
 

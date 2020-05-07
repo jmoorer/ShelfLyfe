@@ -7,7 +7,6 @@ data class Genre(val key:String){
 }
 
  val GENERES= listOf(
-     Genre("40k"),
      Genre("adolescence"),
      Genre("adult"),
      Genre("aeroplanes"),
@@ -15,7 +14,6 @@ data class Genre(val key:String){
      Genre("animals"),
      Genre("anthologies"),
      Genre("art-and-photography"),
-     Genre("artificial-intelligence"),
      Genre("aviation"),
      Genre("biblical"),
      Genre("biography-memoir"),
@@ -29,7 +27,6 @@ data class Genre(val key:String){
      Genre("death"),
      Genre("diary"),
      Genre("disability"),
-     Genre("dyscalculia"),
      Genre("emergency-services"),
      Genre("feminism"),
      Genre("fiction"),
@@ -39,7 +36,6 @@ data class Genre(val key:String){
      Genre("futuristic"),
      Genre("gender"),
      Genre("gender-and-sexuality"),
-     Genre("gettysburg-campaign"),
      Genre("graphic-novels-comics"),
      Genre("graphic-novels-comics-manga"),
      Genre("graphic-novels-manga"),
@@ -101,7 +97,6 @@ data class Genre(val key:String){
      Genre("wildlife"),
      Genre("witchcraft"),
      Genre("women-and-gender-studies"),
-     Genre("womens"),
-     Genre("wwii-related-fiction")
+     Genre("womens")
 
      )

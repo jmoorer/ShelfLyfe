@@ -28,6 +28,14 @@ class BookListViewModel(val repository: BookRepository) : ViewModel() {
         }
     }
 
+    fun  loadBooksByBestSellerList(name: String){
+        viewModelScope.launch {
+            setBooks(emptyList())
+            var books=repository.getBestSellerList(name)?.bestSellers?.map { it.asBook() }
+            books?.let { setBooks(it) }
+        }
+    }
+
 
 
 }

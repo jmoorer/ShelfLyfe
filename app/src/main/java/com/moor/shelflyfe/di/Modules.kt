@@ -6,6 +6,8 @@ import com.moor.shelflyfe.api.google.GoogleBooksService
 import com.moor.shelflyfe.api.gr.GoodReadsService
 import com.moor.shelflyfe.api.itunes.ItunesService
 import com.moor.shelflyfe.api.nyt.NytService
+import com.moor.shelflyfe.ui.bookdetail.BookDetailFragment
+import com.moor.shelflyfe.ui.bookdetail.BookDetailViewModel
 import com.moor.shelflyfe.ui.booklist.BookListViewModel
 import com.moor.shelflyfe.ui.explore.ExploreViewModel
 import com.moor.shelflyfe.ui.home.HomeViewModel
@@ -18,9 +20,12 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
+import org.simpleframework.xml.convert.AnnotationStrategy
+import org.simpleframework.xml.core.Persister
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import kotlin.math.sin
 
 
@@ -64,6 +69,10 @@ val applicationModule = module(override = true) {
              .exceptionOnUnreadXml(false)
              .build()
          ))
+//             .addConverterFactory(
+//                 SimpleXmlConverterFactory.createNonStrict(
+//                     Persister( AnnotationStrategy() // important part!
+//                             )))
         .build().create(GoodReadsService::class.java)
     }
 
@@ -83,4 +92,5 @@ val applicationModule = module(override = true) {
     viewModel { SearchViewModel(get()) }
     viewModel { ListViewModel() }
     viewModel { BookListViewModel(get()) }
+    viewModel { BookDetailViewModel(get()) }
 }
