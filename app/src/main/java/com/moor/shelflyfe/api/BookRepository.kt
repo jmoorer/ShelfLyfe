@@ -32,6 +32,7 @@ class BookRepository(
     }
 
     suspend fun getBookDetails(isbn:String): BookResponse {
+       var r= goodReadsService.getBookDetails2(isbn)
         return goodReadsService.getBookDetails(isbn)
     }
 

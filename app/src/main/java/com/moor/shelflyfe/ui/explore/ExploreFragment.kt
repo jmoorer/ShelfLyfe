@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -127,6 +128,7 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener,
     override fun onClick(book: Book) {
         val action=ExploreFragmentDirections.actionExploreFragmentToBookDetailFragment(book.isbn)
         findNavController().navigate(action)
+
 
     }
 

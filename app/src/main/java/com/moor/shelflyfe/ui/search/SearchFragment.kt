@@ -10,16 +10,19 @@ import com.mancj.materialsearchbar.MaterialSearchBar
 
 import com.moor.shelflyfe.databinding.SearchFragmentBinding
 import com.moor.shelflyfe.ui.Book
+import com.moor.shelflyfe.ui.explore.ExploreFragmentDirections
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SearchFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
+class SearchFragment : Fragment(), MaterialSearchBar.OnSearchActionListener,
+    SearchAdapter.OnItemClickListner {
 
 
     private val viewModel: SearchViewModel by viewModel()
     private lateinit var binding:SearchFragmentBinding
     private  val results= arrayListOf<Book>()
-    private   val searchAdapter=
-        SearchAdapter(results)
+    private   val searchAdapter = SearchAdapter(results).apply {
+        listener= this@SearchFragment
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +72,10 @@ class SearchFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
         viewModel.search(text.toString())
     }
 
-
+    override fun onClick(book: Book) {
+        val action= SearchFragmentDirections.actionSearchFragmentToBookDetailFragment(book.isbn)
+        findNavController().navigate(action)
+    }
 
 
 }

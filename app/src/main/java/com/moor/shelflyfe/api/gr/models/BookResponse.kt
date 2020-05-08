@@ -8,12 +8,12 @@ import com.tickaroo.tikxml.annotation.Xml
 @Xml(name = "GoodreadsResponse")
 class BookResponse {
     @Element
-    var book: BookDetails? = null
+    var book: BookInfo? = null
 
 }
 
 @Xml(name = "book")
-class BookDetails {
+class BookInfo {
     @PropertyElement
     var id: String? = null
     @PropertyElement
@@ -86,7 +86,7 @@ class BookDetails {
     var buy_links: List<BuyLink>? =
         null
     @Element
-    var similar_books: List<BookDetails>? = null
+    var similar_books: List<BookInfo>? = null
 
 
 

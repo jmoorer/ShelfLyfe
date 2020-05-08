@@ -87,5 +87,8 @@ dependencies {
 
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.8'
 
+    implementation ('com.stanfy:gson-xml-java:0.1.7'){
+        exclude group: 'xmlpull', module: 'xmlpull'
+    }
 
 }

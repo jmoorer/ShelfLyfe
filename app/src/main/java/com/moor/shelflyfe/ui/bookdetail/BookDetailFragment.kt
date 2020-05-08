@@ -30,10 +30,10 @@ class BookDetailFragment : Fragment() {
 
             book?.let {
                 binding.apply {
-                    title.text=book.volumeInfo.title
-                    cover.load(book.volumeInfo.imageLinks.thumbnail)
-                    author.text=book.volumeInfo.authors?.first()
-                    description.text=book.volumeInfo.description
+                    title.text=book.title
+                    cover.load(book.imageUrl)
+                    author.text=book.author.name
+                    description.text=book.description
                 }
 
             }

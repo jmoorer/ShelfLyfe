@@ -9,11 +9,21 @@ import com.moor.shelflyfe.ui.Book
 
 class SearchAdapter(var books: List<Book>): RecyclerView.Adapter<SearchAdapter.ViewHolder>(){
 
-    class ViewHolder(val binding: ItemSearchResultBinding): RecyclerView.ViewHolder(binding.root){
+
+    interface  OnItemClickListner{
+        fun onClick(book:Book)
+    }
+
+    var listener :OnItemClickListner?=null
+
+    inner class ViewHolder(val binding: ItemSearchResultBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(book: Book ) = binding.apply {
-            binding.title.text= book.title
-            binding.author.text= book.author
+            title.text= book.title
+            author.text= book.author
             book.imageUrl?.let { binding.cover.load(it) }
+            root.setOnClickListener {
+                listener?.onClick(book)
+            }
         }
     }
 

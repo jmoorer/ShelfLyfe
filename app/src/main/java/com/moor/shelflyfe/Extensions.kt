@@ -1,5 +1,7 @@
 package com.moor.shelflyfe
 
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.palette.graphics.Palette
 import com.moor.shelflyfe.api.google.models.ItemsItem
@@ -19,15 +21,23 @@ fun<T> Call<T>.makeCall(callback: (Throwable?, Response<T>?) -> Unit) {
     })
 }
 
-fun ImageView.load(url:String,callback: ((Exception?, Palette?) -> Unit)?=null){
-    Picasso.get().load(url).fit().into(this,object :com.squareup.picasso.Callback{
-        override fun onSuccess() {
-            callback?.let { extractPallete(url, it) }
-        }
-        override fun onError(e: Exception?) {
+fun ImageView.load(url:String?,callback: ((Exception?, Palette?) -> Unit)?=null){
+    url?.let {
+        Picasso.get().load(url).fit().into(this,object :com.squareup.picasso.Callback{
+            override fun onSuccess() {
+                callback?.let {
+                    val image= this@load.drawable as BitmapDrawable
+                    callback(null,Palette.from(image.bitmap).generate())
+                }
+            }
+            override fun onError(e: Exception?) {
+                callback?.invoke(e,null)
+            }
+        })
+    }?:run{
+        this.setImageResource(R.drawable.ic_book)
+    }
 
-        }
-    })
 }
 
 fun BestSeller.asBook(): Book {
@@ -35,7 +45,7 @@ fun BestSeller.asBook(): Book {
         this.title!!,
         this.author!!,
         this.primaryIsbn13?:"",
-        this.bookImage!!
+        this.bookImage
     )
 }
 fun ResultsItem.asBook(): Book {
@@ -50,7 +60,7 @@ fun ItemsItem.asBook(): Book {
     return Book(
         this.volumeInfo.title,
         this.volumeInfo.authors?.first()?:"??",
-        this.volumeInfo.industryIdentifiers?.first { it.identifier=="ISBN_13" }?.identifier?:"",
+        this.volumeInfo.industryIdentifiers?.firstOrNull { it.identifier=="ISBN_13" }?.identifier?:"",
         this.volumeInfo.imageLinks?.thumbnail?.replace("http", "https")
     )
 }

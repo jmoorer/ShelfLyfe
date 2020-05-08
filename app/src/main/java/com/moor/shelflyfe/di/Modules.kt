@@ -1,5 +1,6 @@
 package com.moor.shelflyfe.di
 
+import com.google.gson.Gson
 import com.moor.shelflyfe.BuildConfig
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.api.google.GoogleBooksService
@@ -13,6 +14,8 @@ import com.moor.shelflyfe.ui.explore.ExploreViewModel
 import com.moor.shelflyfe.ui.home.HomeViewModel
 import com.moor.shelflyfe.ui.list.ListViewModel
 import com.moor.shelflyfe.ui.search.SearchViewModel
+import com.stanfy.gsonxml.GsonXmlBuilder
+import com.stanfy.gsonxml.XmlParserCreator
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import okhttp3.HttpUrl
@@ -22,6 +25,7 @@ import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 import org.simpleframework.xml.convert.AnnotationStrategy
 import org.simpleframework.xml.core.Persister
+import org.xmlpull.v1.XmlPullParserFactory
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -69,10 +73,6 @@ val applicationModule = module(override = true) {
              .exceptionOnUnreadXml(false)
              .build()
          ))
-//             .addConverterFactory(
-//                 SimpleXmlConverterFactory.createNonStrict(
-//                     Persister( AnnotationStrategy() // important part!
-//                             )))
         .build().create(GoodReadsService::class.java)
     }
 
@@ -93,4 +93,6 @@ val applicationModule = module(override = true) {
     viewModel { ListViewModel() }
     viewModel { BookListViewModel(get()) }
     viewModel { BookDetailViewModel(get()) }
+
 }
+

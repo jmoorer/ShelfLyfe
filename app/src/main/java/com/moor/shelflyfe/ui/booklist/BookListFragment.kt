@@ -18,7 +18,7 @@ import com.moor.shelflyfe.ui.search.SearchAdapter
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class BookListFragment : Fragment() {
+class BookListFragment : Fragment(), SearchAdapter.OnItemClickListner {
 
 
     private lateinit var binding: BookListFragmentBinding
@@ -44,9 +44,16 @@ class BookListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
        viewModel.getBookList().observe(viewLifecycleOwner, Observer { books->
-           binding.bookList.adapter= SearchAdapter(books)
+           binding.bookList.adapter= SearchAdapter(books).apply {
+               listener=this@BookListFragment
+           }
            binding.bookList.layoutManager= LinearLayoutManager(context)
        })
+    }
+
+    override fun onClick(book: Book) {
+        val action = BookListFragmentDirections.actionBookListFragmentToBookDetailFragment(book.isbn)
+        findNavController().navigate(action)
     }
 
 }
