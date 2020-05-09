@@ -5,6 +5,7 @@ import com.moor.shelflyfe.api.google.models.GoogleResponse
 import com.moor.shelflyfe.api.gr.GoodReadsService
 //import com.moor.shelflyfe.api.gr.models.AuthorResponse
 import com.moor.shelflyfe.api.gr.models.BookResponse
+import com.moor.shelflyfe.api.itunes.ItunesRssService
 import com.moor.shelflyfe.api.itunes.ItunesService
 import com.moor.shelflyfe.api.nyt.NytService
 
@@ -12,14 +13,17 @@ class BookRepository(
     val nytService: NytService,
     val goodReadsService: GoodReadsService,
     val googleBooksService: GoogleBooksService,
+    val itunesRssService: ItunesRssService,
     val itunesService: ItunesService
 
 ) {
 
 
-    suspend fun getTopBooks()=itunesService.getTopBooks().feed.results
+    suspend fun getTopBooks(size:Int=10)=itunesRssService.getTopBooks(size).feed.results
 
-    suspend fun getTopAudioBooks()=itunesService.getTopBooks().feed.results
+    suspend fun getTopAudioBooks(size:Int=10)=itunesRssService.getTopBooks(size).feed.results
+
+    suspend fun getItunesGenre(id:String="38")= itunesService.getGenreById(id)
 
     suspend fun getBestSellerList()= nytService.getLists()
 
@@ -32,7 +36,6 @@ class BookRepository(
     }
 
     suspend fun getBookDetails(isbn:String): BookResponse {
-       var r= goodReadsService.getBookDetails2(isbn)
         return goodReadsService.getBookDetails(isbn)
     }
 

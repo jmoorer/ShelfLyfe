@@ -1,21 +1,18 @@
 package com.moor.shelflyfe.di
 
-import com.google.gson.Gson
 import com.moor.shelflyfe.BuildConfig
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.api.google.GoogleBooksService
 import com.moor.shelflyfe.api.gr.GoodReadsService
+import com.moor.shelflyfe.api.itunes.ItunesRssService
 import com.moor.shelflyfe.api.itunes.ItunesService
 import com.moor.shelflyfe.api.nyt.NytService
-import com.moor.shelflyfe.ui.bookdetail.BookDetailFragment
 import com.moor.shelflyfe.ui.bookdetail.BookDetailViewModel
 import com.moor.shelflyfe.ui.booklist.BookListViewModel
 import com.moor.shelflyfe.ui.explore.ExploreViewModel
 import com.moor.shelflyfe.ui.home.HomeViewModel
 import com.moor.shelflyfe.ui.list.ListViewModel
 import com.moor.shelflyfe.ui.search.SearchViewModel
-import com.stanfy.gsonxml.GsonXmlBuilder
-import com.stanfy.gsonxml.XmlParserCreator
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import okhttp3.HttpUrl
@@ -23,14 +20,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
-import org.simpleframework.xml.convert.AnnotationStrategy
-import org.simpleframework.xml.core.Persister
-import org.xmlpull.v1.XmlPullParserFactory
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory
-import kotlin.math.sin
 
 
 val applicationModule = module(override = true) {
@@ -81,18 +73,25 @@ val applicationModule = module(override = true) {
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(GoogleBooksService::class.java)
     }
+    single<ItunesRssService>{
+        Retrofit.Builder().baseUrl(ItunesRssService.basrUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build().create(ItunesRssService::class.java)
+    }
     single<ItunesService>{
         Retrofit.Builder().baseUrl(ItunesService.basrUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ItunesService::class.java)
     }
-    factory { BookRepository(get(),get(),get(),get()) }
+
+    factory { BookRepository(get(),get(),get(),get(),get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { ExploreViewModel(get()) }
     viewModel { SearchViewModel(get()) }
     viewModel { ListViewModel() }
     viewModel { BookListViewModel(get()) }
     viewModel { BookDetailViewModel(get()) }
+
 
 }
 

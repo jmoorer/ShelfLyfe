@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/primary">
+   >
 
     <TextView
         android:id="@+id/section_title"
@@ -14,13 +14,14 @@
         android:text="TextView"
         android:textStyle="bold"
         android:paddingLeft="8dp"
-        android:paddingBottom="8dp"
+        android:paddingBottom="16dp"
         android:paddingTop="16dp"
-        android:textSize="18sp"
-        android:textColor="@color/white"/>
+        android:textSize="20sp"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/section_books"
+        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 </LinearLayout>

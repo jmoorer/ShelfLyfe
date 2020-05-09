@@ -12,13 +12,17 @@ import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.moor.shelflyfe.R
 import com.moor.shelflyfe.databinding.ExploreFragmentBinding
 import com.moor.shelflyfe.toDisplayCase
 import com.moor.shelflyfe.ui.Book
+import com.moor.shelflyfe.ui.Category
 import com.moor.shelflyfe.ui.booklist.BookListViewModel
 import com.moor.shelflyfe.ui.home.SectionAdapter
+import com.moor.shelflyfe.ui.home.SpacesItemDecoration
 import com.moor.shelflyfe.ui.list.ListFragmentDirections
 import com.moor.shelflyfe.ui.list.ListItem
 import com.moor.shelflyfe.ui.list.ListViewModel
@@ -39,20 +43,28 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener,
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.featured.observe(viewLifecycleOwner, Observer {books->
-            binding.viewPager.adapter= FeaturedAdapter(books).apply {
-                listener= this@ExploreFragment
-            }
-        })
+//        viewModel.featured.observe(viewLifecycleOwner, Observer {books->
+//            binding.viewPager.adapter= FeaturedAdapter(books).apply {
+//                listener= this@ExploreFragment
+//            }
+//        })
 
         viewModel.sections.observe(viewLifecycleOwner, Observer { sections->
-            binding.sections.adapter=SectionAdapter(sections)
+           binding.sections.adapter=SectionAdapter(sections)
         })
 
         viewModel.bestSellerList.observe(viewLifecycleOwner, Observer {  lists->
              lists?.let {
                  this.bestSellerList =  it.map { ListItem(it.listNameEncoded!!,it.displayName!!) }.toMutableList()
             }
+        })
+        viewModel.genre.observe(viewLifecycleOwner, Observer { cats->
+            binding.categories.apply {
+                adapter = cats?.let { it.subGenres?.let { subs -> CategoryAdapter(subs) } }
+                layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                addItemDecoration(SpacesItemDecoration(8))
+            }
+
         })
     }
     override fun onCreateView(
@@ -61,11 +73,12 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener,
     ): View? {
 
         binding= ExploreFragmentBinding.inflate(inflater,container,false)
+
         binding.toolbar.apply {
             inflateMenu(R.menu.explore_menu)
             setOnMenuItemClickListener(this@ExploreFragment)
         }
-
+//
         binding.sections.apply {
 
             layoutManager= LinearLayoutManager(context)
@@ -75,26 +88,26 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener,
                     DividerItemDecoration.VERTICAL
                 ))
         }
-        binding.genres.setOnClickListener {
-            val items=GENERES.map { ListItem(it.key,it.key.toDisplayCase()) }.toTypedArray()
-            val action=ExploreFragmentDirections.actionOpenList(items,"Genres")
-            val navController = findNavController();
-            navController.navigate(action)
-            val dest= navController.getBackStackEntry(R.id.listFragment)
-            listViewModel.getSelected().observe(dest, Observer { item->
-               getBooksByGenre(item.key)
-            })
-        }
-        binding.bestSellers.setOnClickListener {
-
-            val action=ExploreFragmentDirections.actionOpenList(bestSellerList.toTypedArray(),"Best Seller Lists")
-            val navController = findNavController();
-            navController.navigate(action)
-            val dest= navController.getBackStackEntry(R.id.listFragment)
-            listViewModel.getSelected().observe(dest, Observer { item->
-                getBooksByBestSellerList(item)
-            })
-        }
+//        binding.genres.setOnClickListener {
+//            val items=GENERES.map { ListItem(it.key,it.key.toDisplayCase()) }.toTypedArray()
+//            val action=ExploreFragmentDirections.actionOpenList(items,"Genres")
+//            val navController = findNavController();
+//            navController.navigate(action)
+//            val dest= navController.getBackStackEntry(R.id.listFragment)
+//            listViewModel.getSelected().observe(dest, Observer { item->
+//               getBooksByGenre(item.key)
+//            })
+//        }
+//        binding.bestSellers.setOnClickListener {
+//
+//            val action=ExploreFragmentDirections.actionOpenList(bestSellerList.toTypedArray(),"Best Seller Lists")
+//            val navController = findNavController();
+//            navController.navigate(action)
+//            val dest= navController.getBackStackEntry(R.id.listFragment)
+//            listViewModel.getSelected().observe(dest, Observer { item->
+//                getBooksByBestSellerList(item)
+//            })
+//        }
 
         return binding.root
     }
@@ -105,7 +118,7 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener,
         findNavController().navigate(action)
     }
 
-    fun getBooksByBestSellerList(item: ListItem){
+    private fun getBooksByBestSellerList(item: ListItem){
         bookListViewModel.loadBooksByBestSellerList(item.key)
         val action=ListFragmentDirections.actionListFragmentToBookListFragment(item.value)
         findNavController().navigate(action)

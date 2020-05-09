@@ -7,11 +7,11 @@ import com.moor.shelflyfe.databinding.ItemCategoryBinding
 import com.moor.shelflyfe.ui.Category
 
 
-class CategoryAdapter(val categories:List<Category>): RecyclerView.Adapter<CategoryAdapter.ViewHolder>(){
+class CategoryAdapter(val genres:List<Genre>): RecyclerView.Adapter<CategoryAdapter.ViewHolder>(){
 
     class ViewHolder(val binding: ItemCategoryBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(category: Category)= binding.apply {
-            name.text= category.name
+        fun bind(genre: Genre)= binding.apply {
+            name.text= genre.name
         }
     }
 
@@ -21,9 +21,9 @@ class CategoryAdapter(val categories:List<Category>): RecyclerView.Adapter<Categ
         )
     }
 
-    override fun getItemCount()= categories.size
+    override fun getItemCount()= genres.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(categories[position])
+        holder.bind(genres[position])
     }
 }

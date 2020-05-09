@@ -5,9 +5,11 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.palette.graphics.Palette
 import com.moor.shelflyfe.api.google.models.ItemsItem
+import com.moor.shelflyfe.api.itunes.models.ItunesGenre
 import com.moor.shelflyfe.api.itunes.models.ResultsItem
 import com.moor.shelflyfe.api.nyt.models.BestSeller
 import com.moor.shelflyfe.ui.Book
+import com.moor.shelflyfe.ui.explore.Genre
 import com.squareup.picasso.Picasso
 import org.apache.commons.text.WordUtils
 import retrofit2.Call
@@ -66,4 +68,11 @@ fun ItemsItem.asBook(): Book {
 }
 fun String.toDisplayCase(): String {
    return WordUtils.capitalize(this,' ', '_','-').replace("-"," ")
+}
+
+fun ItunesGenre.toGenre():Genre{
+ val subs= subgenres?.entries?.map {
+     Genre(it.value.id,it.value.name, emptyList())
+ }
+ return  Genre(id,name,subs)
 }

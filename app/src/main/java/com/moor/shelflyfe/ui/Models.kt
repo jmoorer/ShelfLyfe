@@ -6,7 +6,7 @@ import java.io.Serializable
 
 data class Book(val title:String, val author:String, val isbn:String, val imageUrl: String?)
 
-data class Category(var name:String,var iconResoucre:Int?=null)
+data class Category(var id:String, var name:String,var iconResoucre:Int?=null)
 
 data class Section(var title:String, var books:List<Book>)
 
@@ -23,3 +23,4 @@ data class BookDetails(
 )
 
 data class Author(val id:String,var name:String,var imageUrl: String?,val rating: Float)
+

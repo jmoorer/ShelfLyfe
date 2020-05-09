@@ -10,7 +10,7 @@ class GenreAdapter(val genres:List<Genre>):RecyclerView.Adapter<GenreAdapter.Vie
 
     class ViewHolder(val binding: ItemGenreBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(genre: Genre)= binding.apply {
-            genreName.text=genre.key.toDisplayCase()
+            genreName.text=genre.name
 
         }
     }

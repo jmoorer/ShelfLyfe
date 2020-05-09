@@ -3,6 +3,7 @@ package com.moor.shelflyfe.ui.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.moor.shelflyfe.databinding.ItemSectionBinding
@@ -18,7 +19,7 @@ class SectionAdapter(val sections:List<Section>):RecyclerView.Adapter<SectionAda
         fun bind(section: Section)= binding.apply {
             sectionTitle.text= section.title
             sectionBooks.apply {
-                layoutManager=GridLayoutManager(binding.root.context,3)
+                layoutManager=LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
                 setHasFixedSize(true)
                 addItemDecoration(SpacesItemDecoration(8))
                 adapter= SubSectionAdapter(section.books)
@@ -49,7 +50,7 @@ class SubSectionAdapter(val books: List<Book>):RecyclerView.Adapter<SubSectionAd
         return  ViewHolder(ItemSectionBookBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
-    override fun getItemCount()= 6
+    override fun getItemCount() = books.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
        holder.bind(books[position])

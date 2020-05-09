@@ -1,21 +1,20 @@
 package com.moor.shelflyfe.api.itunes
 
+import com.moor.shelflyfe.api.itunes.models.ItunesGenre
 import com.moor.shelflyfe.api.itunes.models.ItunesResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ItunesService {
     companion object{
-        val basrUrl="https://rss.itunes.apple.com/api/v1/us/"
+        val basrUrl="https://itunes.apple.com/"
 
     }
 
-    @GET("books/top-paid/all/{count}/explicit.json")
-    suspend fun  getTopBooks(@Path("count")count:Int= 10):ItunesResponse
-
-    @GET("audiobooks/top-audiobooks/all/{count}/explicit.json")
-    suspend fun  getTopAudioBooks(@Path("count")count:Int= 10):ItunesResponse
+    @GET("WebObjects/MZStoreServices.woa/ws/genres")
+    suspend fun getGenreById(@Query("id")id:String):Map<String,ItunesGenre>
 
 
 }
