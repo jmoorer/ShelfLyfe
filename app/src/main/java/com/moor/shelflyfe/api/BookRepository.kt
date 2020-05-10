@@ -19,11 +19,9 @@ class BookRepository(
 ) {
 
 
-    suspend fun getTopBooks(size:Int=10)=itunesRssService.getTopBooks(size).feed.results
+    suspend fun getTopBooks(genreId:String="38", size:Int=10)= itunesRssService.getTopBooks(genreId,size)
 
-    suspend fun getTopAudioBooks(size:Int=10)=itunesRssService.getTopBooks(size).feed.results
-
-    suspend fun getItunesGenre(id:String="38")= itunesService.getGenreById(id)
+    suspend fun getTopAudioBooks(size:Int=10)=itunesRssService.getTopAudioBooks(size)
 
     suspend fun getBestSellerList()= nytService.getLists()
 
@@ -31,12 +29,12 @@ class BookRepository(
 
     suspend fun  getBestSellerList(name:String)=nytService.getListByType(name).results
 
-    suspend fun search(q:String,isbn:String?=null,author: String?=null,title:String?=null): GoogleResponse {
+    suspend fun search(q:String): GoogleResponse {
        return googleBooksService.search(q)
     }
 
     suspend fun getBookDetails(isbn:String): BookResponse {
-        return goodReadsService.getBookDetails(isbn)
+        return goodReadsService.getBookDetailsByIsbn(isbn)
     }
 
 //    suspend fun getAuthor(id:String): AuthorResponse {

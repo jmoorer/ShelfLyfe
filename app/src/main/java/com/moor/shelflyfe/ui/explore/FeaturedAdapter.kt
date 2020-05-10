@@ -7,13 +7,11 @@ import com.moor.shelflyfe.databinding.ItemFeaturedBinding
 import com.moor.shelflyfe.load
 import com.moor.shelflyfe.preloadImage
 import com.moor.shelflyfe.ui.Book
+import com.moor.shelflyfe.ui.OnBookClickListner
 
 class FeaturedAdapter(val books: List<Book>): RecyclerView.Adapter<FeaturedAdapter.ViewHolder>() {
 
-    interface  OnItemClickListner{
-        fun onClick(book:Book)
-    }
-    var listener:OnItemClickListner?=null
+    var listener: OnBookClickListner?=null
     init {
         books.forEach { book->
             book.imageUrl?.let { preloadImage(it) }

@@ -1,23 +1,20 @@
 package com.moor.shelflyfe.api.itunes
 
-import com.moor.shelflyfe.api.itunes.models.ItunesGenre
-import com.moor.shelflyfe.api.itunes.models.ItunesResponse
-import retrofit2.Call
+import com.moor.shelflyfe.api.itunes.models.Feed
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface ItunesRssService {
     companion object{
-        val basrUrl="https://rss.itunes.apple.com/api/v1/us/"
+        val basrUrl = "https://itunes.apple.com/"
 
     }
+    @GET("us/rss/topebooks/genre={id}/limit={limit}/xml")
+    suspend fun getTopBooks(@Path("id")id:String, @Path("limit")limit:Int): Feed
 
-    @GET("books/top-paid/all/{count}/explicit.json")
-    suspend fun  getTopBooks(@Path("count")count:Int):ItunesResponse
+    @GET("us/rss/topaudiobooks/limit={limit}/xml")
+    suspend fun getTopAudioBooks(@Path("limit")limit:Int): Feed
 
-    @GET("audiobooks/top-audiobooks/all/{count}/explicit.json")
-    suspend fun  getTopAudioBooks(@Path("count")count:Int):ItunesResponse
 
 
 

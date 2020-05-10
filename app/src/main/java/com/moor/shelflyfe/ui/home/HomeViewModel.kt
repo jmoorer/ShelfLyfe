@@ -27,18 +27,7 @@ class HomeViewModel(var repository: BookRepository) : ViewModel() {
         )
     }
 
-    val popularBookList= liveData{
-        emit(
-            Section(
-                "Popular Ebooks",
-                repository.getTopBooks()!!.map { b -> b.asBook() })
-        )
-        emit(
-            Section(
-                "Popular Audiobooks",
-                repository.getTopAudioBooks()!!.map { b -> b.asBook() })
-        )
-    }
+
 
     fun getPopularList(): LiveData<Section> {
         return  popularBooks

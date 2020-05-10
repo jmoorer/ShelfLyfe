@@ -1,10 +1,12 @@
 package com.moor.shelflyfe.ui
 
-import com.moor.shelflyfe.api.gr2.Similar_books
+
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 
-
-data class Book(val title:String, val author:String, val isbn:String, val imageUrl: String?)
+@Parcelize
+data class Book(val title:String, val author:String, val isbn:String?, val imageUrl: String?):Parcelable
 
 data class Category(var id:String, var name:String,var iconResoucre:Int?=null)
 
@@ -14,7 +16,7 @@ data class Section(var title:String, var books:List<Book>)
 data class BookDetails(
     var title: String,
     val imageUrl: String?,
-    val similarBooks: List<Book>,
+    val similarBooks: List<Book> = emptyList(),
     val description:String,
     var author: Author,
     var rating :Float,
@@ -22,5 +24,5 @@ data class BookDetails(
     var publishedDate: String?
 )
 
-data class Author(val id:String,var name:String,var imageUrl: String?,val rating: Float)
+data class Author(val id:String?="",var name:String,var imageUrl: String?,val rating: Float)
 

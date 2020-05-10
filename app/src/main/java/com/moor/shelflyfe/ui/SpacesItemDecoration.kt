@@ -1,4 +1,4 @@
-package com.moor.shelflyfe.ui.home
+package com.moor.shelflyfe.ui
 
 import android.graphics.Rect
 import android.view.View

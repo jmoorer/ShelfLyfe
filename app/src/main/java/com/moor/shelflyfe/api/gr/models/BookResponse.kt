@@ -1,6 +1,7 @@
 package com.moor.shelflyfe.api.gr.models
 
 import com.tickaroo.tikxml.annotation.Element
+import com.tickaroo.tikxml.annotation.Path
 import com.tickaroo.tikxml.annotation.PropertyElement
 import com.tickaroo.tikxml.annotation.Xml
 
@@ -85,11 +86,30 @@ class BookInfo {
     @Element
     var buy_links: List<BuyLink>? =
         null
-    @Element
-    var similar_books: List<BookInfo>? = null
 
+    @Element(name = "similar_books")
+    var similar_books: List<Similar>? = null
 
+}
 
+@Xml
+class  Similar{
+
+    @Path("book")
+    @PropertyElement
+    var title:String?=null
+
+    @Path("book")
+    @PropertyElement(name="isbn13")
+    var isbn13:String?=null
+
+    @Path("book")
+    @PropertyElement(name = "image_url")
+    var image_url:String?=null
+
+    @Path("book/authors/author")
+    @PropertyElement(name = "name")
+    var author:String?=null
 }
 
 @Xml(name = "work")

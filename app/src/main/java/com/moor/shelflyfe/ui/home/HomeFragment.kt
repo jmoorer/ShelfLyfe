@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.moor.shelflyfe.databinding.HomeFragmentBinding
 import com.moor.shelflyfe.ui.Section
+import com.moor.shelflyfe.ui.SectionAdapter
 import com.moor.shelflyfe.ui.explore.FeaturedAdapter
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -22,7 +23,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding : HomeFragmentBinding
 
     private  var sections= arrayListOf<Section>()
-    private  var sectionAdapter=SectionAdapter(sections)
+    private  var sectionAdapter= SectionAdapter(sections)
 
 
 

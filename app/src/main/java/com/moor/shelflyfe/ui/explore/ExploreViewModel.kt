@@ -3,6 +3,7 @@ package com.moor.shelflyfe.ui.explore
 import androidx.lifecycle.*
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.asBook
+import com.moor.shelflyfe.getList
 import com.moor.shelflyfe.toGenre
 import com.moor.shelflyfe.ui.Category
 import com.moor.shelflyfe.ui.Section
@@ -15,11 +16,21 @@ class ExploreViewModel(var repository: BookRepository) : ViewModel() {
     var genre = MutableLiveData<Genre>()
     init {
         viewModelScope.launch {
-            val ig = async { repository.getItunesGenre() }
-            val ebooks = async {  Section("Top Ebooks",repository.getTopAudioBooks()!!.map { it.asBook() }) }
-            val audioBooks = async { Section("Top Audiobooks",repository.getTopAudioBooks()!!.map { it.asBook() }) }
-            sections.value = listOf(ebooks.await(),audioBooks.await())
-            genre.value = ig.await().entries.map { it.value.toGenre() }.first()
+            repository.getBestSellers()
+            val bestSellers= repository.getBestSellers()
+            val fiction= bestSellers?.lists?.getList("combined-print-and-e-book-fiction")
+            val nonfiction=bestSellers?.lists?.getList("combined-print-and-e-book-nonfiction")
+            val advice= bestSellers?.lists?.getList("advice-how-to-and-miscellaneous")
+            val business= bestSellers?.lists?.getList("business-books")
+            val youngAdult= bestSellers?.lists?.getList("young-adult-hardcover")
+
+            sections.value = listOf(
+                Section("Fiction",fiction!!),
+                Section("Non Fiction",nonfiction!!),
+                Section("Advice",advice!!),
+                Section("Business",business!!),
+                Section("Young Adult",youngAdult!!)
+            )
         }
     }
 
@@ -35,16 +46,16 @@ class ExploreViewModel(var repository: BookRepository) : ViewModel() {
         emit(repository.getBestSellerList().results)
     }
     var trendingCategories= liveData {
-       var res= repository.itunesService.getGenreById("38")
-        val categories= repository.getTopBooks(100)
-            ?.flatMap { e->e.genres!! }
+        val categories= repository.getTopBooks(size = 50)
+            .entry
             ?.asSequence()
-            ?.groupBy { g->g.genreId }
+            ?.map { e->e.category!! }
+            ?.groupBy { g->g.id }
             ?.map { p->p }
             ?.sortedByDescending { p->p.value.size }
             ?.map { p->p.value.first() }
-            ?.distinctBy { g->g.genreId }
-            ?.map { g->Category(g.genreId,g.name) }
+            ?.distinctBy { g->g.id }
+            ?.map { g->Genre(g.id!!,g.label!!, emptyList<Genre>()) }
             ?.toList()
         emit(categories)
 

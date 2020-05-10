@@ -7,6 +7,6 @@ data class ItunesGenre(@SerializedName("name")
                  @SerializedName("id")
                  val id: String = "",
                  @SerializedName("subgenres")
-                 val subgenres:Map<String,ItunesGenre>?=null
+                 val subgenres:GenereMap?=null
 )
-
+class   GenereMap:HashMap<String,ItunesGenre>()

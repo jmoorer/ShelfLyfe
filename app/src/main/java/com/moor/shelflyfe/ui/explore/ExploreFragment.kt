@@ -9,20 +9,17 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.moor.shelflyfe.R
 import com.moor.shelflyfe.databinding.ExploreFragmentBinding
 import com.moor.shelflyfe.toDisplayCase
 import com.moor.shelflyfe.ui.Book
-import com.moor.shelflyfe.ui.Category
+import com.moor.shelflyfe.ui.OnBookClickListner
 import com.moor.shelflyfe.ui.booklist.BookListViewModel
-import com.moor.shelflyfe.ui.home.SectionAdapter
-import com.moor.shelflyfe.ui.home.SpacesItemDecoration
+import com.moor.shelflyfe.ui.SectionAdapter
+import com.moor.shelflyfe.ui.SpacesItemDecoration
 import com.moor.shelflyfe.ui.list.ListFragmentDirections
 import com.moor.shelflyfe.ui.list.ListItem
 import com.moor.shelflyfe.ui.list.ListViewModel
@@ -30,7 +27,7 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 
 class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener,
-    FeaturedAdapter.OnItemClickListner {
+    OnBookClickListner {
 
 
     private lateinit var binding: ExploreFragmentBinding
@@ -50,7 +47,9 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener,
 //        })
 
         viewModel.sections.observe(viewLifecycleOwner, Observer { sections->
-           binding.sections.adapter=SectionAdapter(sections)
+           binding.sections.adapter= SectionAdapter(sections).apply {
+               listener= this@ExploreFragment
+           }
         })
 
         viewModel.bestSellerList.observe(viewLifecycleOwner, Observer {  lists->
@@ -58,9 +57,9 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener,
                  this.bestSellerList =  it.map { ListItem(it.listNameEncoded!!,it.displayName!!) }.toMutableList()
             }
         })
-        viewModel.genre.observe(viewLifecycleOwner, Observer { cats->
+        viewModel.trendingCategories.observe(viewLifecycleOwner, Observer { cats->
             binding.categories.apply {
-                adapter = cats?.let { it.subGenres?.let { subs -> CategoryAdapter(subs) } }
+                adapter = cats?.let { CategoryAdapter(it)  }
                 layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
                 addItemDecoration(SpacesItemDecoration(8))
             }
@@ -139,10 +138,8 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener,
     }
 
     override fun onClick(book: Book) {
-        val action=ExploreFragmentDirections.actionExploreFragmentToBookDetailFragment(book.isbn)
+        val action=ExploreFragmentDirections.actionExploreFragmentToBookDetailFragment(book)
         findNavController().navigate(action)
-
-
     }
 
 

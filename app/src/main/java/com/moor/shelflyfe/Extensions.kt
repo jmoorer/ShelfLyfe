@@ -1,13 +1,14 @@
 package com.moor.shelflyfe
 
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.palette.graphics.Palette
 import com.moor.shelflyfe.api.google.models.ItemsItem
 import com.moor.shelflyfe.api.itunes.models.ItunesGenre
 import com.moor.shelflyfe.api.itunes.models.ResultsItem
+import com.moor.shelflyfe.api.itunes.models.Entry
 import com.moor.shelflyfe.api.nyt.models.BestSeller
+import com.moor.shelflyfe.api.nyt.models.SellerList
 import com.moor.shelflyfe.ui.Book
 import com.moor.shelflyfe.ui.explore.Genre
 import com.squareup.picasso.Picasso
@@ -15,6 +16,8 @@ import org.apache.commons.text.WordUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 fun<T> Call<T>.makeCall(callback: (Throwable?, Response<T>?) -> Unit) {
     this.enqueue(object : Callback<T> {
@@ -51,6 +54,8 @@ fun BestSeller.asBook(): Book {
     )
 }
 fun ResultsItem.asBook(): Book {
+
+
     return Book(
         this.name,
         this.artistName,
@@ -62,7 +67,7 @@ fun ItemsItem.asBook(): Book {
     return Book(
         this.volumeInfo.title,
         this.volumeInfo.authors?.first()?:"??",
-        this.volumeInfo.industryIdentifiers?.firstOrNull { it.identifier=="ISBN_13" }?.identifier?:"",
+        this.volumeInfo.industryIdentifiers?.firstOrNull()?.identifier?:"",
         this.volumeInfo.imageLinks?.thumbnail?.replace("http", "https")
     )
 }
@@ -75,4 +80,19 @@ fun ItunesGenre.toGenre():Genre{
      Genre(it.value.id,it.value.name, emptyList())
  }
  return  Genre(id,name,subs)
+}
+fun Entry.asBook(): Book {
+    var imageUrl= images?.last()?.url
+    var isbn=""
+    imageUrl?.let { url->
+        val pattern: Pattern = Pattern.compile("\\b(?:\\d-?){13}\\b")
+        val matcher: Matcher = pattern.matcher(url)
+        if(matcher.find())
+            isbn=matcher.group()
+    }
+    return Book(title!!,author!!,isbn,imageUrl)
+}
+
+fun List<SellerList>.getList(key:String): List<Book>? {
+    return this.first{it.listNameEncoded==key}.bestSellers?.map { it.asBook() }
 }

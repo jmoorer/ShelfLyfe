@@ -2,6 +2,7 @@ package com.moor.shelflyfe.ui.explore
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.moor.shelflyfe.databinding.ItemCategoryBinding
 import com.moor.shelflyfe.ui.Category
@@ -11,7 +12,7 @@ class CategoryAdapter(val genres:List<Genre>): RecyclerView.Adapter<CategoryAdap
 
     class ViewHolder(val binding: ItemCategoryBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(genre: Genre)= binding.apply {
-            name.text= genre.name
+            name.text= HtmlCompat.fromHtml(genre.name, 0)
         }
     }
 

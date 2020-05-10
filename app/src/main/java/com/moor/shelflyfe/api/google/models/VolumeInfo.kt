@@ -28,6 +28,10 @@ data class VolumeInfo(@SerializedName("industryIdentifiers")
                       val panelizationSummary: PanelizationSummary,
                       @SerializedName("publishedDate")
                       val publishedDate: String = "",
+                      @SerializedName("publisher")
+                      val publisher: String = "",
+                      @SerializedName("averageRating")
+                      var averageRating:Float?=null,
                       @SerializedName("maturityRating")
                       val maturityRating: String = "",
                       @SerializedName("allowAnonLogging")

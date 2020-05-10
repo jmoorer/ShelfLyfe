@@ -1,5 +1,6 @@
 package com.moor.shelflyfe.di
 
+import com.google.gson.Gson
 import com.moor.shelflyfe.BuildConfig
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.api.google.GoogleBooksService
@@ -75,7 +76,11 @@ val applicationModule = module(override = true) {
     }
     single<ItunesRssService>{
         Retrofit.Builder().baseUrl(ItunesRssService.basrUrl)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(TikXmlConverterFactory.create(
+                TikXml.Builder()
+                    .exceptionOnUnreadXml(false)
+                    .build()
+            ))
             .build().create(ItunesRssService::class.java)
     }
     single<ItunesService>{
