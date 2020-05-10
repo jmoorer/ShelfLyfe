@@ -4,6 +4,7 @@ import android.app.Application
 import com.google.gson.Gson
 import com.moor.shelflyfe.api.itunes.models.GenereMap
 import com.moor.shelflyfe.api.itunes.models.ItunesGenre
+import com.moor.shelflyfe.db.ObjectBox
 import com.moor.shelflyfe.di.applicationModule
 import org.koin.android.ext.android.startKoin
 import java.io.IOException
@@ -20,6 +21,9 @@ class App : Application(){
         super.onCreate()
         // Start Koin
         startKoin(androidContext = this@App, modules = listOf(applicationModule))
+
+        ObjectBox.init(this)
+
         var json: String? = null
          try {
              val jsonString = this.assets.open("genres.json").bufferedReader().use { it.readText() }

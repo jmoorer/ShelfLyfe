@@ -1,30 +1,58 @@
 package com.moor.shelflyfe.ui.bookdetail
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.api.google.models.VolumeInfo
 import com.moor.shelflyfe.api.gr.models.BookInfo
-import com.moor.shelflyfe.asBook
+import com.moor.shelflyfe.db.Favorite
+import com.moor.shelflyfe.db.Favorite_
+import com.moor.shelflyfe.db.ObjectBox
 import com.moor.shelflyfe.ui.Author
 import com.moor.shelflyfe.ui.Book
 import com.moor.shelflyfe.ui.BookDetails
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
+import io.objectbox.android.AndroidScheduler
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Exception
+
 
 class BookDetailViewModel(val repository: BookRepository) : ViewModel() {
 
+    private var bookDetails = MutableLiveData<BookDetails>()
+    val isFavorite = MutableLiveData<Boolean>()
+    private val favoriteBox = ObjectBox.boxStore.boxFor(Favorite::class.java)
 
-   fun getBookDetails(book: Book)= liveData(viewModelScope.coroutineContext){
-       val details=loadDetails(book)
-       details?.let { emit(details) }
+    fun isFavorited(isbn:String): LiveData<Boolean> {
+
+        favoriteBox.query().build().subscribe().on(AndroidScheduler.mainThread()).observer{ fvs->
+            isFavorite.value= fvs.any { it.isbn13==isbn }
+        }
+        return isFavorite
+    }
+   fun getBookDetails(book: Book): LiveData<BookDetails> {
+       viewModelScope.launch {
+           val details=loadDetails(book)
+           details?.let { bookDetails.value =details }
+       }
+       return bookDetails
    }
 
-    suspend fun loadDetails(book: Book):BookDetails? = withContext(viewModelScope.coroutineContext){
+    fun  toggleFavorite(book:Book){
+        if(isFavorite.value==true){
+            favoriteBox.query().equal(Favorite_.isbn13,book.isbn).build().remove()
+        }else{
+            favoriteBox.put(
+                Favorite(
+                    title = book.title,
+                    author = book.author,
+                    isbn13 = book.isbn!!,
+                    imageUrl = book.imageUrl?:""
+                ))
+        }
+
+    }
+
+
+    private suspend fun loadDetails(book: Book):BookDetails? = withContext(viewModelScope.coroutineContext){
         var bookDetails:BookInfo?=null
         val title= book.title.split("(Unabridged)").first()
         var query="(intitle:${title}+inauthor:${book.author})|isbn:${book.isbn}"
@@ -40,6 +68,7 @@ class BookDetailViewModel(val repository: BookRepository) : ViewModel() {
         }
         print("")
        return@withContext BookDetails(
+           isbn= volume.industryIdentifiers?.first()?.identifier?:bookDetails.isbn13!!,
            title = volume.title,
            author = Author(
                id= bookDetails.authors?.author?.id,

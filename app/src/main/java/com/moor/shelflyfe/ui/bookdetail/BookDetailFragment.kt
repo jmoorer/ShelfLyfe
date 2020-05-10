@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.moor.shelflyfe.R
 import com.moor.shelflyfe.databinding.BookDetailFragmentBinding
+import com.moor.shelflyfe.db.Favorite
+import com.moor.shelflyfe.db.ObjectBox
 import com.moor.shelflyfe.load
 import com.moor.shelflyfe.ui.Book
 import com.moor.shelflyfe.ui.OnBookClickListner
@@ -25,9 +27,11 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class BookDetailFragment : Fragment(), OnBookClickListner {
 
-
     private lateinit var binding: BookDetailFragmentBinding
     private val viewModel: BookDetailViewModel by sharedViewModel()
+
+
+
     private val args:BookDetailFragmentArgs by navArgs()
     @SuppressLint("ResourceAsColor")
     override fun onCreateView(
@@ -36,6 +40,32 @@ class BookDetailFragment : Fragment(), OnBookClickListner {
     ): View? {
 
         binding=BookDetailFragmentBinding.inflate(inflater,container,false)
+        binding.favoriteButton.setOnClickListener {
+            viewModel.toggleFavorite(args.book)
+        }
+        return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onClick(book: Book) {
+
+        findNavController().navigate(R.id.bookDetailFragment, bundleOf("book" to book))
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        viewModel.isFavorited(args.book.isbn!!).observe(viewLifecycleOwner, Observer { isFavorited ->
+            if (isFavorited){
+                binding.favoriteButton.setImageResource(R.drawable.ic_star)
+            }else{
+                binding.favoriteButton.setImageResource(R.drawable.ic_star_border)
+            }
+        })
+
         viewModel.getBookDetails(args.book).observe(viewLifecycleOwner, Observer { book->
 
             book?.let {
@@ -71,16 +101,6 @@ class BookDetailFragment : Fragment(), OnBookClickListner {
 
 
         })
-        return binding.root
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onClick(book: Book) {
-
-        findNavController().navigate(R.id.bookDetailFragment, bundleOf("book" to book))
     }
 
 }

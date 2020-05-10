@@ -132,6 +132,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
 
+        android:id="@+id/favoriteButton"
         app:layout_anchor="@id/header"
         android:layout_margin="20dp"
         android:src="@drawable/ic_bookmark"

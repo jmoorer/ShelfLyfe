@@ -14,6 +14,7 @@ data class Section(var title:String, var books:List<Book>)
 
 
 data class BookDetails(
+    var isbn:String,
     var title: String,
     val imageUrl: String?,
     val similarBooks: List<Book> = emptyList(),
