@@ -138,7 +138,7 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener,
     }
 
     override fun onClick(book: Book) {
-        val action=ExploreFragmentDirections.actionExploreFragmentToBookDetailFragment(book)
+        val action=ExploreFragmentDirections.actionExploreFragmentToBookDetailFragment(book.isbn!!)
         findNavController().navigate(action)
     }
 

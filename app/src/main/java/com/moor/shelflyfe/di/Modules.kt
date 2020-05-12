@@ -1,13 +1,12 @@
 package com.moor.shelflyfe.di
 
-import com.google.gson.Gson
 import com.moor.shelflyfe.BuildConfig
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.api.google.GoogleBooksService
 import com.moor.shelflyfe.api.gr.GoodReadsService
-import com.moor.shelflyfe.api.itunes.ItunesRssService
 import com.moor.shelflyfe.api.itunes.ItunesService
 import com.moor.shelflyfe.api.nyt.NytService
+import com.moor.shelflyfe.api.openlib.OpenLibService
 import com.moor.shelflyfe.ui.bookdetail.BookDetailViewModel
 import com.moor.shelflyfe.ui.booklist.BookListViewModel
 import com.moor.shelflyfe.ui.explore.ExploreViewModel
@@ -74,19 +73,21 @@ val applicationModule = module(override = true) {
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(GoogleBooksService::class.java)
     }
-    single<ItunesRssService>{
-        Retrofit.Builder().baseUrl(ItunesRssService.basrUrl)
+
+    single<ItunesService>{
+        Retrofit.Builder().baseUrl(ItunesService.basrUrl)
             .addConverterFactory(TikXmlConverterFactory.create(
                 TikXml.Builder()
                     .exceptionOnUnreadXml(false)
                     .build()
             ))
-            .build().create(ItunesRssService::class.java)
-    }
-    single<ItunesService>{
-        Retrofit.Builder().baseUrl(ItunesService.basrUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ItunesService::class.java)
+    }
+    single {
+        Retrofit.Builder().baseUrl(OpenLibService.baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build().create(OpenLibService::class.java)
     }
 
     factory { BookRepository(get(),get(),get(),get(),get()) }
@@ -96,6 +97,7 @@ val applicationModule = module(override = true) {
     viewModel { ListViewModel() }
     viewModel { BookListViewModel(get()) }
     viewModel { BookDetailViewModel(get()) }
+
 
 
 }

@@ -7,7 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.moor.shelflyfe.FavoritesAdapter
+import com.moor.shelflyfe.R
 import com.moor.shelflyfe.databinding.HomeFragmentBinding
 import com.moor.shelflyfe.ui.Section
 import com.moor.shelflyfe.ui.SectionAdapter
@@ -22,30 +25,30 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by  viewModel()
     private lateinit var binding : HomeFragmentBinding
 
-    private  var sections= arrayListOf<Section>()
-    private  var sectionAdapter= SectionAdapter(sections)
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        viewModel.featured.observe(viewLifecycleOwner, Observer {books->
-            binding.viewPager.adapter=
-                FeaturedAdapter(books)
-        })
-//        viewModel.getPopularList().observe(viewLifecycleOwner, Observer { section->
-//            sections.add(section)
-//            sectionAdapter.notifyDataSetChanged()
-//        })
         binding = HomeFragmentBinding.inflate(inflater,container,false)
-        binding.sections.apply{
-            adapter= sectionAdapter
-            layoutManager= LinearLayoutManager(context)
+        binding.empty.exploreButton.setOnClickListener {
+            findNavController().navigate(R.id.exploreFragment)
         }
         return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel.favorites.observe(viewLifecycleOwner, Observer { favs->
+            if (favs.size>0 && binding.viewSwitcher.nextView==binding.sections){
+                binding.viewSwitcher.showNext()
+            }
+            binding.sections.apply{
+                adapter= FavoritesAdapter(favs)
+                layoutManager= LinearLayoutManager(context)
+            }
+        })
     }
 
 

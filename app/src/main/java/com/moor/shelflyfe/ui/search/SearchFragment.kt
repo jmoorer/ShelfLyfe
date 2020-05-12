@@ -73,7 +73,7 @@ class SearchFragment : Fragment(), MaterialSearchBar.OnSearchActionListener,
     }
 
     override fun onClick(book: Book) {
-        val action= SearchFragmentDirections.actionSearchFragmentToBookDetailFragment(book)
+        val action= SearchFragmentDirections.actionSearchFragmentToBookDetailFragment(book.isbn!!)
         findNavController().navigate(action)
     }
 

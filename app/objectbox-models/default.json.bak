@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:5373423521782697168",
-      "lastPropertyId": "6:5137819865723594753",
+      "lastPropertyId": "5:4907910924538783706",
       "name": "Favorite",
       "properties": [
         {
@@ -33,12 +33,6 @@
           "id": "5:4907910924538783706",
           "name": "author",
           "type": 9
-        },
-        {
-          "id": "6:5137819865723594753",
-          "name": "rating",
-          "type": 7,
-          "flags": 4
         }
       ],
       "relations": []

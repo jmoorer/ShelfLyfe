@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.moor.shelflyfe.R
 import com.moor.shelflyfe.databinding.BookDetailFragmentBinding
@@ -23,13 +24,14 @@ import com.moor.shelflyfe.ui.OnBookClickListner
 import com.moor.shelflyfe.ui.Section
 import com.moor.shelflyfe.ui.SectionAdapter
 import com.moor.shelflyfe.ui.booklist.BookListFragmentDirections
+import com.moor.shelflyfe.ui.list.ListItem
 import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class BookDetailFragment : Fragment(), OnBookClickListner {
 
     private lateinit var binding: BookDetailFragmentBinding
-    private val viewModel: BookDetailViewModel by sharedViewModel()
-
+    private val viewModel: BookDetailViewModel by viewModel()
 
 
     private val args:BookDetailFragmentArgs by navArgs()
@@ -41,7 +43,7 @@ class BookDetailFragment : Fragment(), OnBookClickListner {
 
         binding=BookDetailFragmentBinding.inflate(inflater,container,false)
         binding.favoriteButton.setOnClickListener {
-            viewModel.toggleFavorite(args.book)
+            viewModel.toggleFavorite()
         }
         return binding.root
     }
@@ -51,14 +53,13 @@ class BookDetailFragment : Fragment(), OnBookClickListner {
     }
 
     override fun onClick(book: Book) {
-
-        findNavController().navigate(R.id.bookDetailFragment, bundleOf("book" to book))
+        findNavController().navigate(R.id.bookDetailFragment, bundleOf("isbn" to book.isbn))
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.isFavorited(args.book.isbn!!).observe(viewLifecycleOwner, Observer { isFavorited ->
+        viewModel.isFavorited(args.isbn).observe(viewLifecycleOwner, Observer { isFavorited ->
             if (isFavorited){
                 binding.favoriteButton.setImageResource(R.drawable.ic_star)
             }else{
@@ -66,7 +67,7 @@ class BookDetailFragment : Fragment(), OnBookClickListner {
             }
         })
 
-        viewModel.getBookDetails(args.book).observe(viewLifecycleOwner, Observer { book->
+        viewModel.getBookDetails(args.isbn).observe(viewLifecycleOwner, Observer { book->
 
             book?.let {
                 binding.apply {
@@ -85,16 +86,19 @@ class BookDetailFragment : Fragment(), OnBookClickListner {
                         }
                     }
 
-                    author.text=book.author.name
-                    authorImage.load(book.author.imageUrl)
-                    authorName.text=book.author.name
+                    author.text=book.author.joinToString(",")
+
                     description.text=book.description
-                    similar.apply {
-                        adapter= SectionAdapter(listOf(Section("Similar",book.similarBooks))).apply {
-                            listener= this@BookDetailFragment
-                        }
-                        layoutManager= LinearLayoutManager(context)
+                    tags.apply{
+                        adapter=TagAdapter(listOf(ListItem("A","A")))
+                        layoutManager= StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
                     }
+//                    similar.apply {
+//                        adapter= SectionAdapter(listOf(Section("Similar",book.similarBooks))).apply {
+//                            listener= this@BookDetailFragment
+//                        }
+//                        layoutManager= LinearLayoutManager(context)
+//                    }
                 }
 
             }

@@ -19,7 +19,7 @@ data class BookDetails(
     val imageUrl: String?,
     val similarBooks: List<Book> = emptyList(),
     val description:String,
-    var author: Author,
+    var author: List<String>,
     var rating :Float,
     var publisher:String?,
     var publishedDate: String?

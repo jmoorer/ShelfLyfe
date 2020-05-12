@@ -52,7 +52,7 @@ class BookListFragment : Fragment(), SearchAdapter.OnItemClickListner {
     }
 
     override fun onClick(book: Book) {
-        val action = BookListFragmentDirections.actionBookListFragmentToBookDetailFragment(book)
+        val action = BookListFragmentDirections.actionBookListFragmentToBookDetailFragment(book.isbn!!)
         findNavController().navigate(action)
     }
 

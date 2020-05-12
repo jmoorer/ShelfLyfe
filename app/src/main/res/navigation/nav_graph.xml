@@ -71,8 +71,8 @@
         android:label="book_detail_fragment"
         tools:layout="@layout/book_detail_fragment" >
         <argument
-            android:name="book"
-            app:argType="com.moor.shelflyfe.ui.Book" />
+            android:name="isbn"
+            app:argType="string" />
         <action
             android:id="@+id/action_bookDetailFragment_self"
             app:destination="@id/bookDetailFragment" />

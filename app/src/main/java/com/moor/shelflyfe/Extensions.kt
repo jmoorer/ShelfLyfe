@@ -96,3 +96,4 @@ fun Entry.asBook(): Book {
 fun List<SellerList>.getList(key:String): List<Book>? {
     return this.first{it.listNameEncoded==key}.bestSellers?.map { it.asBook() }
 }
+
