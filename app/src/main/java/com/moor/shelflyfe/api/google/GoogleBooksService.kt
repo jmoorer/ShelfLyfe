@@ -12,6 +12,6 @@ interface GoogleBooksService {
     }
 
     @GET("books/v1/volumes?maxResults=40")
-   suspend fun search(@Query("q") q:String):GoogleResponse
+   suspend fun search(@Query("q") q:String,@Query("orderBy") order:String):GoogleResponse
 
 }

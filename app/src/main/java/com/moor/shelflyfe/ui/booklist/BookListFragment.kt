@@ -35,6 +35,7 @@ class BookListFragment : Fragment(), SearchAdapter.OnItemClickListner {
 
         binding = BookListFragmentBinding.inflate(inflater,container,false)
         binding.toolbar.title= args.title
+
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
@@ -49,6 +50,7 @@ class BookListFragment : Fragment(), SearchAdapter.OnItemClickListner {
            }
            binding.bookList.layoutManager= LinearLayoutManager(context)
        })
+        viewModel.loadBooksByGenre(args.title)
     }
 
     override fun onClick(book: Book) {

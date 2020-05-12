@@ -50,6 +50,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    implementation "com.google.android.material:material:1.2.0-alpha06"
 
 
     testImplementation 'junit:junit:4.12'
@@ -88,7 +89,7 @@ dependencies {
 
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.8'
 
-    implementation ('com.stanfy:gson-xml-java:0.1.7'){
+    implementation('com.stanfy:gson-xml-java:0.1.7') {
         exclude group: 'xmlpull', module: 'xmlpull'
     }
 

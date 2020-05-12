@@ -13,6 +13,8 @@ import com.moor.shelflyfe.ui.explore.ExploreViewModel
 import com.moor.shelflyfe.ui.home.HomeViewModel
 import com.moor.shelflyfe.ui.list.ListViewModel
 import com.moor.shelflyfe.ui.search.SearchViewModel
+import com.moor.shelflyfe.ui.subject.SubjectFragment
+import com.moor.shelflyfe.ui.subject.SubjectViewModel
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import okhttp3.HttpUrl
@@ -97,6 +99,7 @@ val applicationModule = module(override = true) {
     viewModel { ListViewModel() }
     viewModel { BookListViewModel(get()) }
     viewModel { BookDetailViewModel(get()) }
+    viewModel { SubjectViewModel(get()) }
 
 
 

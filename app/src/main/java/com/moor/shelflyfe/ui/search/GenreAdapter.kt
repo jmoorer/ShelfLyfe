@@ -1,17 +1,25 @@
-package com.moor.shelflyfe.ui.explore
+package com.moor.shelflyfe.ui.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.moor.shelflyfe.databinding.ItemGenreBinding
-import com.moor.shelflyfe.toDisplayCase
+import com.moor.shelflyfe.db.Genre
+
 
 class GenreAdapter(val genres:List<Genre>):RecyclerView.Adapter<GenreAdapter.ViewHolder>(){
 
-    class ViewHolder(val binding: ItemGenreBinding): RecyclerView.ViewHolder(binding.root){
+    interface OnGenreClickListener{
+        fun onGenreClick(genre: Genre)
+    }
+
+    var listener :OnGenreClickListener?=null
+    inner class ViewHolder(val binding: ItemGenreBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(genre: Genre)= binding.apply {
             genreName.text=genre.name
-
+            binding.root.setOnClickListener {
+                listener?.onGenreClick(genre)
+            }
         }
     }
 

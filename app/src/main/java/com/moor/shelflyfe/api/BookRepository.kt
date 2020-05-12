@@ -29,17 +29,17 @@ class BookRepository(
 
     suspend fun  getBestSellerList(name:String)=nytService.getListByType(name).results
 
-    suspend fun search(q:String): GoogleResponse {
-       return googleBooksService.search(q)
+    suspend fun search(q:String,order:String="relevance"): GoogleResponse {
+       return googleBooksService.search(q,order)
     }
 
     suspend fun getBookDetails(isbn:String): BookResponse {
         return goodReadsService.getBookDetailsByIsbn(isbn)
     }
 
-//    suspend fun getAuthor(id:String): AuthorResponse {
-//        return goodReadsService.getAuthorDetails(id)
-//    }
+    suspend fun getSubjectDetails(subject:String) = openLibService.getSubjectDetails(subject)
+
+
 
 
 }

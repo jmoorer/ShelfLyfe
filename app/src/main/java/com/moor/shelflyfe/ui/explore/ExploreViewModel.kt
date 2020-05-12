@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.asBook
 import com.moor.shelflyfe.getList
-import com.moor.shelflyfe.toGenre
+
 import com.moor.shelflyfe.ui.Category
 import com.moor.shelflyfe.ui.Section
 import kotlinx.coroutines.async

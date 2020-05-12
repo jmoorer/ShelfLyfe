@@ -15,13 +15,6 @@
         android:name="com.moor.shelflyfe.ui.explore.ExploreFragment"
         android:label="ExploreFragment" >
         <action
-            android:id="@+id/action_exploreFragment_to_searchFragment"
-            app:destination="@id/searchFragment"
-            app:popUpTo="@id/exploreFragment" />
-        <action
-            android:id="@+id/action_open_list"
-            app:destination="@id/listFragment" />
-        <action
             android:id="@+id/action_open_book_list"
             app:destination="@id/bookListFragment" />
         <action
@@ -36,21 +29,8 @@
         <action
             android:id="@+id/action_searchFragment_to_bookDetailFragment"
             app:destination="@id/bookDetailFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/listFragment"
-        android:name="com.moor.shelflyfe.ui.list.ListFragment"
-        android:label="list_fragment"
-        tools:layout="@layout/list_fragment" >
-        <argument
-            android:name="items"
-            app:argType="com.moor.shelflyfe.ui.list.ListItem[]" />
-        <argument
-            android:name="title"
-            app:argType="string"
-            app:nullable="true" />
         <action
-            android:id="@+id/action_listFragment_to_bookListFragment"
+            android:id="@+id/action_searchFragment_to_bookListFragment"
             app:destination="@id/bookListFragment" />
     </fragment>
     <fragment
@@ -76,5 +56,14 @@
         <action
             android:id="@+id/action_bookDetailFragment_self"
             app:destination="@id/bookDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/subjectFragment"
+        android:name="com.moor.shelflyfe.ui.subject.SubjectFragment"
+        android:label="subject_fragment"
+        tools:layout="@layout/subject_fragment" >
+        <argument
+            android:name="subject"
+            app:argType="com.moor.shelflyfe.ui.list.ListItem" />
     </fragment>
 </navigation>

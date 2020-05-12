@@ -6,7 +6,7 @@ import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.moor.shelflyfe.databinding.ItemCategoryBinding
 import com.moor.shelflyfe.databinding.ItemTagBinding
-import com.moor.shelflyfe.ui.explore.Genre
+
 import com.moor.shelflyfe.ui.list.ListItem
 
 class TagAdapter(private val tags:List<ListItem>):RecyclerView.Adapter<TagAdapter.ViewHolder>(){

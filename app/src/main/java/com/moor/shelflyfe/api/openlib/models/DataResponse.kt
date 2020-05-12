@@ -2,5 +2,4 @@ package com.moor.shelflyfe.api.openlib.models
 
 import com.google.gson.annotations.SerializedName
 
-
-class OpenLibDetailResponse:HashMap<String,BookResult>()
+class DataResponse:HashMap<String,BookData>()

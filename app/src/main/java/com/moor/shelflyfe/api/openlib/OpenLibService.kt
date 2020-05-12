@@ -1,17 +1,24 @@
 package com.moor.shelflyfe.api.openlib
 
-import com.moor.shelflyfe.api.openlib.models.OpenLibDetailResponse
+import com.moor.shelflyfe.api.openlib.models.DataResponse
+import com.moor.shelflyfe.api.openlib.models.DetailResponse
+import com.moor.shelflyfe.api.openlib.models.subject.SubjectResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface OpenLibService {
     companion object{
-        val baseUrl="https://openlibrary.org/api/"
+        val baseUrl="https://openlibrary.org/"
     }
 
-    @GET("books?jscmd=details&format=json")
-    suspend fun  getBookDetailsByIsbn(@Query("bibkeys")keys:String):OpenLibDetailResponse
+    @GET("api/books?jscmd=details&format=json")
+    suspend fun  getBookDetailsByIsbn(@Query("bibkeys")keys:String):DetailResponse
 
-    @GET("books?jscmd=data&format=json")
-    suspend fun  getBookDataByIsbn(@Query("bibkeys")keys:String):OpenLibDetailResponse
+    @GET("api/books?jscmd=data&format=json")
+    suspend fun  getBookDataByIsbn(@Query("bibkeys")keys:String):DataResponse
+
+
+    @GET("subjects/{subject}.json?details=true")
+    suspend fun  getSubjectDetails(@Path("subject")subject:String): SubjectResponse
 }

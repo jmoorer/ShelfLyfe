@@ -67,6 +67,12 @@ class BookDetailFragment : Fragment(), OnBookClickListner {
             }
         })
 
+        viewModel.getSubjects(args.isbn).observe(viewLifecycleOwner, Observer { subjects->
+            binding.tags.apply{
+                adapter=TagAdapter(subjects)
+                layoutManager= StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+            }
+        })
         viewModel.getBookDetails(args.isbn).observe(viewLifecycleOwner, Observer { book->
 
             book?.let {
@@ -89,16 +95,7 @@ class BookDetailFragment : Fragment(), OnBookClickListner {
                     author.text=book.author.joinToString(",")
 
                     description.text=book.description
-                    tags.apply{
-                        adapter=TagAdapter(listOf(ListItem("A","A")))
-                        layoutManager= StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
-                    }
-//                    similar.apply {
-//                        adapter= SectionAdapter(listOf(Section("Similar",book.similarBooks))).apply {
-//                            listener= this@BookDetailFragment
-//                        }
-//                        layoutManager= LinearLayoutManager(context)
-//                    }
+
                 }
 
             }

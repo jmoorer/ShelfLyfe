@@ -28,9 +28,7 @@ class App : Application(){
     private lateinit var trending: Box<Trending>
     private lateinit var genreBox: Box<Genre>
 
-    companion object{
-        var GenreMap:Map<String,ItunesGenre> = HashMap()
-    }
+
     override fun onCreate() {
         super.onCreate()
         // Start Koin
@@ -49,11 +47,11 @@ class App : Application(){
             val titles= itunes.getTopBooks("38",20).entry?.map{ it.title}
             val query = titles?.map {"intitle:\"${it}\""}?.joinToString("|")
             query?.let {
-                var googleBooksService:GoogleBooksService=get()
-                var books=googleBooksService.search(query).items?.filter { titles.contains(it.volumeInfo.title) }
-//                ?.forEach {
-//                    Trending()
-//                }
+//                var googleBooksService:GoogleBooksService=get()
+//                var books=googleBooksService.search(query).items?.filter { titles.contains(it.volumeInfo.title) }
+////                ?.forEach {
+////                    Trending()
+////                }
                 print("")
             }
 

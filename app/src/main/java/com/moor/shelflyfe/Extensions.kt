@@ -10,7 +10,7 @@ import com.moor.shelflyfe.api.itunes.models.Entry
 import com.moor.shelflyfe.api.nyt.models.BestSeller
 import com.moor.shelflyfe.api.nyt.models.SellerList
 import com.moor.shelflyfe.ui.Book
-import com.moor.shelflyfe.ui.explore.Genre
+
 import com.squareup.picasso.Picasso
 import org.apache.commons.text.WordUtils
 import retrofit2.Call
@@ -75,12 +75,7 @@ fun String.toDisplayCase(): String {
    return WordUtils.capitalize(this,' ', '_','-').replace("-"," ")
 }
 
-fun ItunesGenre.toGenre():Genre{
- val subs= subgenres?.entries?.map {
-     Genre(it.value.id,it.value.name, emptyList())
- }
- return  Genre(id,name,subs)
-}
+
 fun Entry.asBook(): Book {
     var imageUrl= images?.last()?.url
     var isbn=""

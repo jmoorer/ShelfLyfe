@@ -20,14 +20,13 @@ import com.moor.shelflyfe.ui.OnBookClickListner
 import com.moor.shelflyfe.ui.booklist.BookListViewModel
 import com.moor.shelflyfe.ui.SectionAdapter
 import com.moor.shelflyfe.ui.SpacesItemDecoration
-import com.moor.shelflyfe.ui.list.ListFragmentDirections
+
 import com.moor.shelflyfe.ui.list.ListItem
 import com.moor.shelflyfe.ui.list.ListViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 
-class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener,
-    OnBookClickListner {
+class ExploreFragment : Fragment(), OnBookClickListner {
 
 
     private lateinit var binding: ExploreFragmentBinding
@@ -75,7 +74,7 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener,
 
         binding.toolbar.apply {
             inflateMenu(R.menu.explore_menu)
-            setOnMenuItemClickListener(this@ExploreFragment)
+            //setOnMenuItemClickListener(this@ExploreFragment)
         }
 //
         binding.sections.apply {
@@ -111,31 +110,15 @@ class ExploreFragment : Fragment(), Toolbar.OnMenuItemClickListener,
         return binding.root
     }
 
-    private fun getBooksByGenre(key: String) {
-        bookListViewModel.loadBooksByGenre(key)
-        val action=ListFragmentDirections.actionListFragmentToBookListFragment(key.toDisplayCase())
-        findNavController().navigate(action)
-    }
 
-    private fun getBooksByBestSellerList(item: ListItem){
-        bookListViewModel.loadBooksByBestSellerList(item.key)
-        val action=ListFragmentDirections.actionListFragmentToBookListFragment(item.value)
-        findNavController().navigate(action)
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-        when(item?.itemId){
-            R.id.action_search->{
-              findNavController().navigate(R.id.action_exploreFragment_to_searchFragment)
-            }
-        }
-        return false
-    }
+
 
     override fun onClick(book: Book) {
         val action=ExploreFragmentDirections.actionExploreFragmentToBookDetailFragment(book.isbn!!)

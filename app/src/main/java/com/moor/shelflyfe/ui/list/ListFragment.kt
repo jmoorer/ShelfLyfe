@@ -21,14 +21,20 @@ class ListFragment : Fragment() {
     private lateinit var adapter: ListAdapter
     private lateinit var binding: ListFragmentBinding
 
-    private val args: ListFragmentArgs by navArgs()
+
     private  val listViewModel:ListViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        val items= arguments?.getParcelableArray("items") as Array<ListItem>
+
+        adapter= ListAdapter(items)
+
+        adapter.listener={
+            listViewModel.select(it)
+        }
         binding=ListFragmentBinding.inflate(inflater,container,false)
         binding.listItems.apply {
             adapter= this@ListFragment.adapter
@@ -41,22 +47,12 @@ class ListFragment : Fragment() {
             )
         }
 
-        args.title?.let {
-            binding.toolbar.title=it
-        }
-        binding.toolbar.setNavigationOnClickListener {
-          findNavController().popBackStack()
-        }
-
         return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter= ListAdapter(args.items)
-        adapter.listener={
-            listViewModel.select(it)
-        }
+
     }
 
 }

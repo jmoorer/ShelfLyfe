@@ -8,33 +8,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:minHeight="?attr/actionBarSize"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_items"
+        android:background="@color/primary"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:titleTextColor="@android:color/white"
-        android:background="?attr/colorPrimary"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        />
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        >
+        android:layout_height="wrap_content"/>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_items"
-                android:background="@color/primary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 </LinearLayout>
