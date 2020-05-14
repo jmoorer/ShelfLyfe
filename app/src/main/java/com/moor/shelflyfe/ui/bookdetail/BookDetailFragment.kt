@@ -19,10 +19,7 @@ import com.moor.shelflyfe.databinding.BookDetailFragmentBinding
 import com.moor.shelflyfe.db.Favorite
 import com.moor.shelflyfe.db.ObjectBox
 import com.moor.shelflyfe.load
-import com.moor.shelflyfe.ui.Book
-import com.moor.shelflyfe.ui.OnBookClickListner
-import com.moor.shelflyfe.ui.Section
-import com.moor.shelflyfe.ui.SectionAdapter
+import com.moor.shelflyfe.ui.*
 import com.moor.shelflyfe.ui.booklist.BookListFragmentDirections
 import com.moor.shelflyfe.ui.list.ListItem
 import org.koin.android.viewmodel.ext.android.sharedViewModel
@@ -67,12 +64,13 @@ class BookDetailFragment : Fragment(), OnBookClickListner {
             }
         })
 
-        viewModel.getSubjects(args.isbn).observe(viewLifecycleOwner, Observer { subjects->
-            binding.tags.apply{
-                adapter=TagAdapter(subjects)
-                layoutManager= StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
-            }
-        })
+//        viewModel.getSubjects(args.isbn).observe(viewLifecycleOwner, Observer { subjects->
+//            binding.tags.apply{
+//                adapter=TagAdapter(subjects)
+//                layoutManager= StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+//                addItemDecoration(SpacesItemDecoration(8))
+//            }
+//        })
         viewModel.getBookDetails(args.isbn).observe(viewLifecycleOwner, Observer { book->
 
             book?.let {

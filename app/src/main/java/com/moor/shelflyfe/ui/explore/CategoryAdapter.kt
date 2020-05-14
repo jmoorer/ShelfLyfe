@@ -10,9 +10,18 @@ import com.moor.shelflyfe.ui.Category
 
 class CategoryAdapter(val genres:List<Genre>): RecyclerView.Adapter<CategoryAdapter.ViewHolder>(){
 
-    class ViewHolder(val binding: ItemCategoryBinding): RecyclerView.ViewHolder(binding.root){
+    interface OnGenreClickListener{
+        fun onGenreClick(genre: Genre)
+    }
+
+    var listener :OnGenreClickListener?=null
+
+    inner class ViewHolder(val binding: ItemCategoryBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(genre: Genre)= binding.apply {
             name.text= HtmlCompat.fromHtml(genre.name, 0)
+            binding.root.setOnClickListener {
+                listener?.onGenreClick(genre)
+            }
         }
     }
 

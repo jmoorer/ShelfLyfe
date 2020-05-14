@@ -101,9 +101,53 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "4:5070716921742354880",
+      "lastPropertyId": "8:2234858166904437404",
+      "name": "Download",
+      "properties": [
+        {
+          "id": "1:6132959868780991722",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:756574645984722506",
+          "name": "title",
+          "type": 9
+        },
+        {
+          "id": "3:1634625543178013344",
+          "name": "isbn13",
+          "type": 9
+        },
+        {
+          "id": "5:2702181714293768831",
+          "name": "author",
+          "type": 9
+        },
+        {
+          "id": "6:8076650534246211127",
+          "name": "path",
+          "type": 9
+        },
+        {
+          "id": "7:289905689664999237",
+          "name": "lastLocation",
+          "type": 9
+        },
+        {
+          "id": "8:2234858166904437404",
+          "name": "image",
+          "type": 23
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "3:1815019651079366118",
+  "lastEntityId": "4:5070716921742354880",
   "lastIndexId": "0:0",
   "lastRelationId": "1:8340460517432218679",
   "lastSequenceId": "0:0",
@@ -111,7 +155,9 @@
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    2016337864481011990
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

@@ -8,6 +8,8 @@ import com.moor.shelflyfe.api.gr.models.BookResponse
 import com.moor.shelflyfe.api.itunes.ItunesService
 import com.moor.shelflyfe.api.nyt.NytService
 import com.moor.shelflyfe.api.openlib.OpenLibService
+import com.moor.shelflyfe.api.openlib.models.DataResponse
+import com.moor.shelflyfe.api.openlib.models.DetailResponse
 
 class BookRepository(
     val nytService: NytService,
@@ -33,8 +35,8 @@ class BookRepository(
        return googleBooksService.search(q,order)
     }
 
-    suspend fun getBookDetails(isbn:String): BookResponse {
-        return goodReadsService.getBookDetailsByIsbn(isbn)
+    suspend fun getBookDetails(isbn:String): DataResponse {
+        return openLibService.getBookDataByIsbn(isbn)
     }
 
     suspend fun getSubjectDetails(subject:String) = openLibService.getSubjectDetails(subject)

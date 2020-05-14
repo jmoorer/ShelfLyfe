@@ -1,6 +1,10 @@
 package com.moor.shelflyfe.di
 
+
+import com.folioreader.Config
+import com.folioreader.FolioReader
 import com.moor.shelflyfe.BuildConfig
+import com.moor.shelflyfe.R
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.api.google.GoogleBooksService
 import com.moor.shelflyfe.api.gr.GoodReadsService
@@ -13,7 +17,6 @@ import com.moor.shelflyfe.ui.explore.ExploreViewModel
 import com.moor.shelflyfe.ui.home.HomeViewModel
 import com.moor.shelflyfe.ui.list.ListViewModel
 import com.moor.shelflyfe.ui.search.SearchViewModel
-import com.moor.shelflyfe.ui.subject.SubjectFragment
 import com.moor.shelflyfe.ui.subject.SubjectViewModel
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
@@ -22,7 +25,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
-
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -91,6 +93,12 @@ val applicationModule = module(override = true) {
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(OpenLibService::class.java)
     }
+
+    single {
+       FolioReader.get().setConfig(Config().setNightMode(true)
+             .setThemeColorRes(R.color.primary), true)
+    }
+
 
     factory { BookRepository(get(),get(),get(),get(),get()) }
     viewModel { HomeViewModel(get()) }

@@ -53,7 +53,7 @@ class SearchFragment : Fragment(), MaterialSearchBar.OnSearchActionListener,
             setOnSearchActionListener(this@SearchFragment)
             //openSearch()
         }
-
+        binding.flipper.displayedChild=0
         return binding.root
     }
 
@@ -93,6 +93,7 @@ class SearchFragment : Fragment(), MaterialSearchBar.OnSearchActionListener,
 
     override fun onSearchConfirmed(text: CharSequence?) {
         viewModel.search(text.toString())
+        binding.flipper.displayedChild=0
     }
 
     override fun onClick(book: Book) {

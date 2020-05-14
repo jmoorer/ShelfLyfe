@@ -1,36 +1,41 @@
 package com.moor.shelflyfe
 
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.moor.shelflyfe.databinding.ItemFavoriteBinding
-import com.moor.shelflyfe.db.Favorite
-
-class FavoritesAdapter(val favorites: List<Favorite>):RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
+import com.moor.shelflyfe.db.Download
 
 
-    interface OnFavoriteClickListener{
-        fun onClick(favorite: Favorite)
-        fun onMenuClick(favorite: Favorite,menuItem: MenuItem)
+class DownloadsAdapter(val downloads: List<Download>):RecyclerView.Adapter<DownloadsAdapter.ViewHolder>() {
+
+
+    interface OnDownloadClickListener{
+        fun onClick(download: Download)
+        fun onMenuClick(download: Download,menuItem: MenuItem)
     }
-    var listener:OnFavoriteClickListener?=null
+    var listener:OnDownloadClickListener?=null
+
+
     inner  class  ViewHolder(val binding:ItemFavoriteBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(favorite: Favorite)=binding.apply {
-            cover.load(favorite.imageUrl)
-            title.text= favorite.title
-            author.text= "By ${favorite.author}"
+        fun bind(download:Download)=binding.apply {
+            val bmp = BitmapFactory.decodeByteArray(download.image, 0, download.image?.size?:0)
+            cover.setImageBitmap(bmp)
+            title.text= download.title
+            author.text= "By ${download.author}"
             ratingBar.numStars=5
-            ratingBar.rating = favorite.rating
+
             root.setOnClickListener {
-                listener?.onClick(favorite)
+                listener?.onClick(download)
             }
             menuButton.setOnClickListener {
                 PopupMenu(binding.root.context,it).apply {
                     inflate(R.menu.fav_menu)
                     setOnMenuItemClickListener { item ->
-                        listener?.onMenuClick(favorite,item)
+                        listener?.onMenuClick(download,item)
                         return@setOnMenuItemClickListener false
                     }
                 }.show()
@@ -45,10 +50,10 @@ class FavoritesAdapter(val favorites: List<Favorite>):RecyclerView.Adapter<Favor
     }
 
     override fun getItemCount(): Int {
-        return  favorites.size
+        return  downloads.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(favorites[position])
+        holder.bind(downloads[position])
     }
 }

@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.startKoin
+import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.lang.Exception
@@ -36,6 +37,7 @@ class App : Application(){
 
         ObjectBox.init(this)
 
+        File("books").mkdir()
 
         genreBox=ObjectBox.boxStore.boxFor(Genre::class.java)
         trending= ObjectBox.boxStore.boxFor(Trending::class.java)

@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -26,7 +27,7 @@ import com.moor.shelflyfe.ui.list.ListViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 
-class ExploreFragment : Fragment(), OnBookClickListner {
+class ExploreFragment : Fragment(), OnBookClickListner, CategoryAdapter.OnGenreClickListener {
 
 
     private lateinit var binding: ExploreFragmentBinding
@@ -58,7 +59,9 @@ class ExploreFragment : Fragment(), OnBookClickListner {
         })
         viewModel.trendingCategories.observe(viewLifecycleOwner, Observer { cats->
             binding.categories.apply {
-                adapter = cats?.let { CategoryAdapter(it)  }
+                adapter = cats?.let { CategoryAdapter(it).apply {
+                  listener= this@ExploreFragment
+                } }
                 layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
                 addItemDecoration(SpacesItemDecoration(8))
             }
@@ -86,26 +89,6 @@ class ExploreFragment : Fragment(), OnBookClickListner {
                     DividerItemDecoration.VERTICAL
                 ))
         }
-//        binding.genres.setOnClickListener {
-//            val items=GENERES.map { ListItem(it.key,it.key.toDisplayCase()) }.toTypedArray()
-//            val action=ExploreFragmentDirections.actionOpenList(items,"Genres")
-//            val navController = findNavController();
-//            navController.navigate(action)
-//            val dest= navController.getBackStackEntry(R.id.listFragment)
-//            listViewModel.getSelected().observe(dest, Observer { item->
-//               getBooksByGenre(item.key)
-//            })
-//        }
-//        binding.bestSellers.setOnClickListener {
-//
-//            val action=ExploreFragmentDirections.actionOpenList(bestSellerList.toTypedArray(),"Best Seller Lists")
-//            val navController = findNavController();
-//            navController.navigate(action)
-//            val dest= navController.getBackStackEntry(R.id.listFragment)
-//            listViewModel.getSelected().observe(dest, Observer { item->
-//                getBooksByBestSellerList(item)
-//            })
-//        }
 
         return binding.root
     }
@@ -123,6 +106,10 @@ class ExploreFragment : Fragment(), OnBookClickListner {
     override fun onClick(book: Book) {
         val action=ExploreFragmentDirections.actionExploreFragmentToBookDetailFragment(book.isbn!!)
         findNavController().navigate(action)
+    }
+
+    override fun onGenreClick(genre: Genre) {
+        findNavController().navigate(R.id.bookListFragment, bundleOf("title" to genre.name) )
     }
 
 

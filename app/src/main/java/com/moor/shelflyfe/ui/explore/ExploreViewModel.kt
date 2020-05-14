@@ -1,5 +1,7 @@
 package com.moor.shelflyfe.ui.explore
 
+import android.text.Html
+import android.text.TextUtils
 import androidx.lifecycle.*
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.asBook
@@ -55,7 +57,7 @@ class ExploreViewModel(var repository: BookRepository) : ViewModel() {
             ?.sortedByDescending { p->p.value.size }
             ?.map { p->p.value.first() }
             ?.distinctBy { g->g.id }
-            ?.map { g->Genre(g.id!!,g.label!!, emptyList<Genre>()) }
+            ?.map { g->Genre(g.id!!,Html.fromHtml(g.label).toString(), emptyList<Genre>()) }
             ?.toList()
         emit(categories)
 
