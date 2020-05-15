@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.codekidlabs.storagechooser.StorageChooser
 import com.folioreader.FolioReader
 import com.folioreader.model.locators.ReadLocator
+import com.google.android.material.tabs.TabLayout
 import com.moor.shelflyfe.DownloadsAdapter
 import com.moor.shelflyfe.FavoritesAdapter
 import com.moor.shelflyfe.R
@@ -65,7 +66,21 @@ class HomeFragment : Fragment(), FavoritesAdapter.OnFavoriteClickListener,
         binding.importButton.setOnClickListener {
             importEbook()
         }
-        binding.empty.exploreButton.setOnClickListener {
+        binding.tabs.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                binding.switcher.displayedChild= tab.position
+            }
+
+        })
+        binding.favoriteEmptyState.exploreButton.setOnClickListener {
            findNavController().navigate(R.id.exploreFragment)
         }
         return binding.root
@@ -74,24 +89,22 @@ class HomeFragment : Fragment(), FavoritesAdapter.OnFavoriteClickListener,
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.favorites.observe(viewLifecycleOwner, Observer { favs->
-            if (favs.size>0 && binding.viewSwitcher.nextView==binding.sections){
-                binding.viewSwitcher.showNext()
-            }else if(binding.viewSwitcher.nextView!=binding.sections){
-                binding.viewSwitcher.showNext()
-            }
-            binding.sections.apply{
+
+            binding.favoriteEmptyState.root.visibility= if(favs.any()) View.GONE else View.VISIBLE
+            binding.favorites.apply{
                 adapter= FavoritesAdapter(favs).apply {
                     listener= this@HomeFragment
                 }
-                layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                layoutManager= LinearLayoutManager(context)
             }
         })
         viewModel.downloads.observe(viewLifecycleOwner, Observer { downloads->
+                binding.downloadsEmptyState.root.visibility= if(downloads.any()) View.GONE else View.VISIBLE
                 binding.downloads.apply {
                     adapter= DownloadsAdapter(downloads).apply {
                         listener= this@HomeFragment
                     }
-                    layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                    layoutManager= LinearLayoutManager(context)
                 }
 
         })
@@ -172,10 +185,7 @@ class HomeFragment : Fragment(), FavoritesAdapter.OnFavoriteClickListener,
 
     fun ingestEbook(path:String){
         try {
-            // find InputStream for book
 
-
-            // Load Book from inputStream
             val alert = AlertDialog.Builder(context)
                 .setMessage("Importing")
                 .setView(ProgressBar(context))
@@ -213,7 +223,11 @@ class HomeFragment : Fragment(), FavoritesAdapter.OnFavoriteClickListener,
     }
 
     override fun onMenuClick(download: Download, menuItem: MenuItem) {
-        TODO("Not yet implemented")
+        when(menuItem.itemId){
+            R.id.action_remove->{
+                viewModel.removeDownload(download.id)
+            }
+        }
     }
 
 

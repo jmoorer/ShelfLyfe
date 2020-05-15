@@ -56,9 +56,9 @@ class BookDetailFragment : Fragment(), OnBookClickListner {
 
         viewModel.isFavorited(args.isbn).observe(viewLifecycleOwner, Observer { isFavorited ->
             if (isFavorited){
-                binding.favoriteButton.setImageResource(R.drawable.ic_star)
+                binding.favoriteButton.setImageResource(R.drawable.ic_bookmark)
             }else{
-                binding.favoriteButton.setImageResource(R.drawable.ic_star_border)
+                binding.favoriteButton.setImageResource(R.drawable.ic_bookmark_border)
             }
         })
 

@@ -57,6 +57,7 @@
         app:layout_constraintTop_toBottomOf="@+id/author" />
 
     <RatingBar
+        android:visibility="gone"
         android:id="@+id/ratingBar"
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"

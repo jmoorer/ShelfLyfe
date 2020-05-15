@@ -40,6 +40,10 @@ class HomeViewModel(var repository: BookRepository) : ViewModel() {
         favoriteBox.remove(id);
     }
 
+    fun removeDownload(id:Long){
+        downloadBox.remove(id);
+    }
+
     fun saveDownload(download: Download){
         downloadBox.put(download)
     }
