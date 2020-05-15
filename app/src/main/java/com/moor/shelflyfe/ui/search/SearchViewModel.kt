@@ -22,8 +22,5 @@ class SearchViewModel(var repository: BookRepository) : ViewModel() {
         results.postValue(books)
     }
 
-    fun getGenres() = Transformations.map(ObjectBoxLiveData(genreBox.query().equal(Genre_.id,38).build())){ genres->
-        genres.first().subGenres.toList().sortedBy{ it.name }
-    }
-
+    fun getGenres() = ObjectBoxLiveData(genreBox.query().build())
 }

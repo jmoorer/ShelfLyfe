@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_searchFragment_to_bookListFragment"
             app:destination="@id/bookListFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_searchDialogFragment"
+            app:destination="@id/searchDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/bookListFragment"
@@ -66,4 +69,9 @@
             android:name="subject"
             app:argType="com.moor.shelflyfe.ui.list.ListItem" />
     </fragment>
+    <fragment
+        android:id="@+id/searchDialogFragment"
+        android:name="com.moor.shelflyfe.ui.search.SearchDialogFragment"
+        android:label="search_dialog_fragment"
+        tools:layout="@layout/search_dialog_fragment" />
 </navigation>

@@ -45,7 +45,7 @@
     },
     {
       "id": "2:3551496578346135823",
-      "lastPropertyId": "2:7833620382611147161",
+      "lastPropertyId": "3:7790094163850848126",
       "name": "Genre",
       "properties": [
         {
@@ -58,15 +58,14 @@
           "id": "2:7833620382611147161",
           "name": "name",
           "type": 9
+        },
+        {
+          "id": "3:7790094163850848126",
+          "name": "key",
+          "type": 9
         }
       ],
-      "relations": [
-        {
-          "id": "1:8340460517432218679",
-          "name": "subGenres",
-          "targetId": "2:3551496578346135823"
-        }
-      ]
+      "relations": []
     },
     {
       "id": "3:1815019651079366118",
@@ -158,6 +157,8 @@
   "retiredPropertyUids": [
     2016337864481011990
   ],
-  "retiredRelationUids": [],
+  "retiredRelationUids": [
+    8340460517432218679
+  ],
   "version": 1
 }

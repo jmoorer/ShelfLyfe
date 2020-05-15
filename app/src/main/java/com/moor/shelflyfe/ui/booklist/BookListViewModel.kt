@@ -23,11 +23,11 @@ class BookListViewModel(val repository: BookRepository) : ViewModel() {
     fun  loadBooksByGenre(genre: String){
         viewModelScope.launch {
             setBooks(emptyList())
-            var query = genre.split("&").map { "subject:${it.toLowerCase().trim()}" }.first()
-            var books=repository.search(query,"newest").items?.map { it.asBook() }
+            val books=repository.search( "subject:${genre}" ,"newest").items?.map { it.asBook() }
             books?.let { setBooks(it) }
         }
     }
+
 
     fun  loadBooksByBestSellerList(name: String){
         viewModelScope.launch {

@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.MainActivity">
     <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/ic_search"
-        android:title="Search"
+        android:id="@+id/action_preferences"
+        android:icon="@drawable/ic_more"
         android:orderInCategory="80"
+        android:iconTint="@color/white"
         app:showAsAction="ifRoom|collapseActionView" />
 </menu>

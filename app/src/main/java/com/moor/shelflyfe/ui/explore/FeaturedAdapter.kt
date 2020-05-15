@@ -1,17 +1,21 @@
 package com.moor.shelflyfe.ui.explore
 
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.moor.shelflyfe.databinding.ItemFeaturedBinding
+import com.moor.shelflyfe.db.Trending
 import com.moor.shelflyfe.load
 import com.moor.shelflyfe.preloadImage
 import com.moor.shelflyfe.ui.Book
 import com.moor.shelflyfe.ui.OnBookClickListner
+import com.moor.shelflyfe.ui.OnItemClickListener
 
-class FeaturedAdapter(val books: List<Book>): RecyclerView.Adapter<FeaturedAdapter.ViewHolder>() {
+class FeaturedAdapter(val books: List<Trending>): RecyclerView.Adapter<FeaturedAdapter.ViewHolder>() {
 
-    var listener: OnBookClickListner?=null
+    var listener: OnItemClickListener<Trending>?=null
+
     init {
         books.forEach { book->
             book.imageUrl?.let { preloadImage(it) }
@@ -19,8 +23,8 @@ class FeaturedAdapter(val books: List<Book>): RecyclerView.Adapter<FeaturedAdapt
     }
     inner class ViewHolder(val binding: ItemFeaturedBinding):RecyclerView.ViewHolder(binding.root){
 
-        fun bind(book : Book)= binding.apply {
-            bookTitle.text=book.title
+        fun bind(book :Trending)= binding.apply {
+            bookTitle.text= Html.fromHtml(book.title)
             book.imageUrl?.let {
                 coverImage.load(it){ exception, palette ->
                     palette?.vibrantSwatch?.let { swatch ->
@@ -30,9 +34,9 @@ class FeaturedAdapter(val books: List<Book>): RecyclerView.Adapter<FeaturedAdapt
                     }
                 }
             }
-            authorName.text = "By ${book.author}"
+            authorName.text = "By ${Html.fromHtml(book.author)}"
             root.setOnClickListener {
-                listener?.onClick(book)
+               listener?.onClick(book)
             }
         }
     }

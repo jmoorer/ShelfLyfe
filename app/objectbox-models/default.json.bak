@@ -104,7 +104,7 @@
     },
     {
       "id": "4:5070716921742354880",
-      "lastPropertyId": "7:289905689664999237",
+      "lastPropertyId": "8:2234858166904437404",
       "name": "Download",
       "properties": [
         {
@@ -124,11 +124,6 @@
           "type": 9
         },
         {
-          "id": "4:2016337864481011990",
-          "name": "imageUrl",
-          "type": 9
-        },
-        {
           "id": "5:2702181714293768831",
           "name": "author",
           "type": 9
@@ -142,6 +137,11 @@
           "id": "7:289905689664999237",
           "name": "lastLocation",
           "type": 9
+        },
+        {
+          "id": "8:2234858166904437404",
+          "name": "image",
+          "type": 23
         }
       ],
       "relations": []
@@ -155,7 +155,9 @@
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    2016337864481011990
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

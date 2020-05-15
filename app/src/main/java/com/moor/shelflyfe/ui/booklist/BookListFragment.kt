@@ -50,7 +50,6 @@ class BookListFragment : Fragment(), SearchAdapter.OnItemClickListner {
            }
            binding.bookList.layoutManager= LinearLayoutManager(context)
        })
-        viewModel.loadBooksByGenre(args.title)
     }
 
     override fun onClick(book: Book) {

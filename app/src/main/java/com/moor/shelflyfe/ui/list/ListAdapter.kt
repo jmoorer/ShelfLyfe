@@ -7,13 +7,16 @@ import com.moor.shelflyfe.databinding.ItemTextBinding
 
 class ListAdapter(val items:Array<ListItem>):RecyclerView.Adapter<ListAdapter.ViewHolder>() {
 
-    var listener:((ListItem)->Unit)?=null
+    var listener:OnClickListener?=null
 
+    interface OnClickListener{
+        fun onClick(listItem: ListItem)
+    }
     inner class ViewHolder(val binding:ItemTextBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(item:ListItem){
            binding.textView.text = item.value
             binding.root.setOnClickListener {
-                listener?.invoke(item)
+                listener?.onClick(item)
             }
         }
     }

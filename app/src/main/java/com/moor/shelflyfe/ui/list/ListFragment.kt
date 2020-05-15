@@ -16,7 +16,7 @@ import com.moor.shelflyfe.databinding.ListFragmentBinding
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 
-class ListFragment : Fragment() {
+class ListFragment : Fragment(), ListAdapter.OnClickListener {
 
     private lateinit var adapter: ListAdapter
     private lateinit var binding: ListFragmentBinding
@@ -32,9 +32,7 @@ class ListFragment : Fragment() {
 
         adapter= ListAdapter(items)
 
-        adapter.listener={
-            listViewModel.select(it)
-        }
+        adapter.listener=this
         binding=ListFragmentBinding.inflate(inflater,container,false)
         binding.listItems.apply {
             adapter= this@ListFragment.adapter
@@ -53,6 +51,10 @@ class ListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+    }
+
+    override fun onClick(listItem: ListItem) {
+        listViewModel.select(listItem)
     }
 
 }

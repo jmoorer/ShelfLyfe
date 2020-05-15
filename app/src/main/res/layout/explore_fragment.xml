@@ -8,6 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -68,32 +69,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-<!--        <androidx.viewpager2.widget.ViewPager2-->
-<!--            android:id="@+id/view_pager"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@drawable/bottom_border"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:minHeight="100dp"-->
-<!--            />-->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bottom_border"
+                android:orientation="horizontal"
+                android:minHeight="100dp"
+                />
 
-
-
-<!--        <TextView-->
-<!--            android:id="@+id/best_sellers"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@drawable/bottom_border"-->
-<!--            android:paddingHorizontal="16dp"-->
-<!--            android:paddingVertical="8dp"-->
-<!--            android:text="Best Sellers"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textSize="18sp"-->
-<!--            android:textStyle="bold" />-->
+            <me.relex.circleindicator.CircleIndicator3
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="16dp"/>
+        </FrameLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/sections"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
+        <TextView
+            android:layout_marginVertical="16dp"
+            android:text="More"
+            android:textSize="22sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sellerList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"

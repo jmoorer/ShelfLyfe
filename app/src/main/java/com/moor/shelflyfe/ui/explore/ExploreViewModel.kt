@@ -5,17 +5,21 @@ import android.text.TextUtils
 import androidx.lifecycle.*
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.asBook
+import com.moor.shelflyfe.db.ObjectBox
+import com.moor.shelflyfe.db.Trending
 import com.moor.shelflyfe.getList
 
 import com.moor.shelflyfe.ui.Category
 import com.moor.shelflyfe.ui.Section
+import io.objectbox.android.ObjectBoxLiveData
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class ExploreViewModel(var repository: BookRepository) : ViewModel() {
 
     var sections= MutableLiveData<List<Section>>()
-    var genre = MutableLiveData<Genre>()
+    //var genre = MutableLiveData<Genre>()
+    private  var trendingBox= ObjectBox.boxStore.boxFor(Trending::class.java)
     init {
         viewModelScope.launch {
             repository.getBestSellers()
@@ -36,13 +40,7 @@ class ExploreViewModel(var repository: BookRepository) : ViewModel() {
         }
     }
 
-    val featured= liveData {
-        emit(repository.getBestSellers()!!.lists!!.flatMap { l-> l.bestSellers!! }
-            .filter { b->b.rank==1 }
-            .distinctBy { b->b.primaryIsbn13 }
-            .map { b->b.asBook()}
-        )
-    }
+    val featured= ObjectBoxLiveData(trendingBox.query().build())
 
     var bestSellerList= liveData {
         emit(repository.getBestSellerList().results)

@@ -22,17 +22,14 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class SearchFragment : Fragment(), MaterialSearchBar.OnSearchActionListener,
+class SearchFragment : Fragment(),
     SearchAdapter.OnItemClickListner, GenreAdapter.OnGenreClickListener {
 
 
     private val viewModel: SearchViewModel by viewModel()
     private  val bookListViewModel:BookListViewModel by sharedViewModel()
     private lateinit var binding:SearchFragmentBinding
-    private  val results= arrayListOf<Book>()
-    private   val searchAdapter = SearchAdapter(results).apply {
-        listener= this@SearchFragment
-    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,25 +42,17 @@ class SearchFragment : Fragment(), MaterialSearchBar.OnSearchActionListener,
         savedInstanceState: Bundle?
     ): View? {
         binding= SearchFragmentBinding.inflate(inflater,container,false)
-        binding.results.apply {
-            adapter= searchAdapter
-            layoutManager= LinearLayoutManager(context)
+
+        binding.searchBar.setOnClickListener {
+           findNavController().navigate(R.id.searchDialogFragment)
         }
-        binding.searchBar.apply {
-            setOnSearchActionListener(this@SearchFragment)
-            //openSearch()
-        }
-        binding.flipper.displayedChild=0
+
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.searchResults().observe(viewLifecycleOwner, Observer { books->
-            this.results.clear()
-            this.results.addAll(books)
-            searchAdapter.notifyDataSetChanged()
-        })
+
         viewModel.getGenres().observe(viewLifecycleOwner, Observer { genres->
             binding.genres.apply {
                 layoutManager=LinearLayoutManager(context)
@@ -79,22 +68,9 @@ class SearchFragment : Fragment(), MaterialSearchBar.OnSearchActionListener,
         })
     }
 
-    override fun onButtonClicked(buttonCode: Int) {
 
-    }
 
-    override fun onSearchStateChanged(enabled: Boolean) {
-        if (enabled){
-            binding.flipper.displayedChild=1
-        }else{
-            binding.flipper.displayedChild=0
-        }
-    }
 
-    override fun onSearchConfirmed(text: CharSequence?) {
-        viewModel.search(text.toString())
-        binding.flipper.displayedChild=0
-    }
 
     override fun onClick(book: Book) {
         val action= SearchFragmentDirections.actionSearchFragmentToBookDetailFragment(book.isbn!!)
@@ -102,8 +78,8 @@ class SearchFragment : Fragment(), MaterialSearchBar.OnSearchActionListener,
     }
 
     override fun onGenreClick(genre: Genre) {
-        val key= genre.name.toLowerCase().split(" ").first()
-        findNavController().navigate(R.id.bookListFragment, bundleOf("title" to genre.name) )
+        findNavController().navigate(R.id.bookListFragment, bundleOf("title" to genre.name))
+        bookListViewModel.loadBooksByGenre(genre.key)
     }
 
 

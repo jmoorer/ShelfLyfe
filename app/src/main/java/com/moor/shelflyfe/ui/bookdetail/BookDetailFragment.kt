@@ -1,7 +1,6 @@
 package com.moor.shelflyfe.ui.bookdetail
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,21 +10,18 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.moor.shelflyfe.R
+import com.moor.shelflyfe.creatLoadingDialog
 import com.moor.shelflyfe.databinding.BookDetailFragmentBinding
-import com.moor.shelflyfe.db.Favorite
-import com.moor.shelflyfe.db.ObjectBox
 import com.moor.shelflyfe.load
 import com.moor.shelflyfe.ui.*
-import com.moor.shelflyfe.ui.booklist.BookListFragmentDirections
-import com.moor.shelflyfe.ui.list.ListItem
-import org.koin.android.viewmodel.ext.android.sharedViewModel
+import com.moor.shelflyfe.ui.search.SearchDialogFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class BookDetailFragment : Fragment(), OnBookClickListner {
+
+    private lateinit var loading: SearchDialogFragment
 
     private lateinit var binding: BookDetailFragmentBinding
     private val viewModel: BookDetailViewModel by viewModel()
@@ -39,6 +35,7 @@ class BookDetailFragment : Fragment(), OnBookClickListner {
     ): View? {
 
         binding=BookDetailFragmentBinding.inflate(inflater,container,false)
+
         binding.favoriteButton.setOnClickListener {
             viewModel.toggleFavorite()
         }
@@ -47,6 +44,7 @@ class BookDetailFragment : Fragment(), OnBookClickListner {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        loading= SearchDialogFragment()
     }
 
     override fun onClick(book: Book) {
@@ -71,6 +69,8 @@ class BookDetailFragment : Fragment(), OnBookClickListner {
 //                addItemDecoration(SpacesItemDecoration(8))
 //            }
 //        })
+        val alert= creatLoadingDialog()
+        alert?.show()
         viewModel.getBookDetails(args.isbn).observe(viewLifecycleOwner, Observer { book->
 
             book?.let {
@@ -97,8 +97,8 @@ class BookDetailFragment : Fragment(), OnBookClickListner {
                 }
 
             }
-
-
+            alert?.dismiss()
+            //loading.dismiss()
         })
     }
 

@@ -13,40 +13,46 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayoutMediator
 import com.moor.shelflyfe.R
+import com.moor.shelflyfe.creatLoadingDialog
 import com.moor.shelflyfe.databinding.ExploreFragmentBinding
+import com.moor.shelflyfe.db.Trending
 import com.moor.shelflyfe.toDisplayCase
-import com.moor.shelflyfe.ui.Book
-import com.moor.shelflyfe.ui.OnBookClickListner
+import com.moor.shelflyfe.ui.*
 import com.moor.shelflyfe.ui.booklist.BookListViewModel
-import com.moor.shelflyfe.ui.SectionAdapter
-import com.moor.shelflyfe.ui.SpacesItemDecoration
+import com.moor.shelflyfe.ui.list.ListAdapter
 
 import com.moor.shelflyfe.ui.list.ListItem
 import com.moor.shelflyfe.ui.list.ListViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 
-class ExploreFragment : Fragment(), OnBookClickListner, CategoryAdapter.OnGenreClickListener {
+class ExploreFragment : Fragment(), OnBookClickListner, CategoryAdapter.OnGenreClickListener,
+    OnItemClickListener<Trending> {
 
 
     private lateinit var binding: ExploreFragmentBinding
     private  val viewModel: ExploreViewModel by sharedViewModel()
-    private  val listViewModel:ListViewModel by sharedViewModel()
     private  val bookListViewModel:BookListViewModel by sharedViewModel()
-    private  var bestSellerList= listOf<ListItem>()
+
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-//        viewModel.featured.observe(viewLifecycleOwner, Observer {books->
-//            binding.viewPager.adapter= FeaturedAdapter(books).apply {
-//                listener= this@ExploreFragment
-//            }
-//        })
+        viewModel.featured.observe(viewLifecycleOwner, Observer {books->
+            binding.apply {
+                viewPager.adapter= FeaturedAdapter(books.take(5)).apply {
+                    listener= this@ExploreFragment
+                    registerAdapterDataObserver(indicator.adapterDataObserver)
+                }
+                indicator.setViewPager(viewPager)
+            }
+        })
 
         viewModel.sections.observe(viewLifecycleOwner, Observer { sections->
+
            binding.sections.adapter= SectionAdapter(sections).apply {
                listener= this@ExploreFragment
            }
@@ -54,7 +60,18 @@ class ExploreFragment : Fragment(), OnBookClickListner, CategoryAdapter.OnGenreC
 
         viewModel.bestSellerList.observe(viewLifecycleOwner, Observer {  lists->
              lists?.let {
-                 this.bestSellerList =  it.map { ListItem(it.listNameEncoded!!,it.displayName!!) }.toMutableList()
+                 var bestSellerList =  it.map { l-> ListItem(l.listNameEncoded!!,l.displayName!!) }.toTypedArray()
+                 binding.sellerList.apply {
+                     adapter= ListAdapter(bestSellerList).apply {
+                         listener= object:ListAdapter.OnClickListener{
+                             override fun onClick(listItem: ListItem) {
+                                 findNavController().navigate(R.id.bookListFragment, bundleOf("title" to listItem.value))
+                                 bookListViewModel.loadBooksByBestSellerList(listItem.key)
+                             }
+                         }
+                     }
+                     layoutManager= LinearLayoutManager(context)
+                 }
             }
         })
         viewModel.trendingCategories.observe(viewLifecycleOwner, Observer { cats->
@@ -76,10 +93,9 @@ class ExploreFragment : Fragment(), OnBookClickListner, CategoryAdapter.OnGenreC
         binding= ExploreFragmentBinding.inflate(inflater,container,false)
 
         binding.toolbar.apply {
-            inflateMenu(R.menu.explore_menu)
+           // inflateMenu(R.menu.explore_menu)
             //setOnMenuItemClickListener(this@ExploreFragment)
         }
-//
         binding.sections.apply {
 
             layoutManager= LinearLayoutManager(context)
@@ -110,6 +126,11 @@ class ExploreFragment : Fragment(), OnBookClickListner, CategoryAdapter.OnGenreC
 
     override fun onGenreClick(genre: Genre) {
         findNavController().navigate(R.id.bookListFragment, bundleOf("title" to genre.name) )
+    }
+
+    override fun onClick(book: Trending) {
+        val action=ExploreFragmentDirections.actionExploreFragmentToBookDetailFragment(book.isbn13)
+        findNavController().navigate(action)
     }
 
 

@@ -1,16 +1,19 @@
 package com.moor.shelflyfe
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.app.AlertDialog
 import android.graphics.drawable.BitmapDrawable
+import android.view.View
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import androidx.palette.graphics.Palette
 import com.moor.shelflyfe.api.google.models.ItemsItem
-import com.moor.shelflyfe.api.itunes.models.ItunesGenre
-import com.moor.shelflyfe.api.itunes.models.ResultsItem
 import com.moor.shelflyfe.api.itunes.models.Entry
+import com.moor.shelflyfe.api.itunes.models.ResultsItem
 import com.moor.shelflyfe.api.nyt.models.BestSeller
 import com.moor.shelflyfe.api.nyt.models.SellerList
 import com.moor.shelflyfe.ui.Book
-
 import com.squareup.picasso.Picasso
 import org.apache.commons.text.WordUtils
 import retrofit2.Call
@@ -18,6 +21,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+
 
 fun<T> Call<T>.makeCall(callback: (Throwable?, Response<T>?) -> Unit) {
     this.enqueue(object : Callback<T> {
@@ -92,3 +96,27 @@ fun List<SellerList>.getList(key:String): List<Book>? {
     return this.first{it.listNameEncoded==key}.bestSellers?.map { it.asBook() }
 }
 
+fun View.animateView(
+    toVisibility: Int,
+    toAlpha: Float,
+    duration: Int
+) {
+    val show = toVisibility == View.VISIBLE
+    if (show) {
+        this.alpha = 0f
+    }
+    this.visibility = View.VISIBLE
+
+    this.animate()
+        .setDuration(duration.toLong())
+        .alpha(if (show) toAlpha else 0F)
+        .setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+              this@animateView.visibility = toVisibility
+            }
+        })
+}
+fun Fragment.creatLoadingDialog()= AlertDialog.Builder(context)
+    .setView(R.layout.loading_fragment)
+    .setCancelable(false)
+    .create()
