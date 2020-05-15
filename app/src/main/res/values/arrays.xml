@@ -5,4 +5,25 @@
         <item>Item 2</item>
         <item>Item 3</item>
     </string-array>
+    <array name="paranoid_theme">
+        <!-- Overview -->
+        <item>@color/primary</item> <!--  Top Header bg -->
+        <item>@color/white</item> <!-- header text   -->
+        <item>@color/white</item> <!-- list bg  -->
+        <item>@color/primary</item> <!--  storage list name text  -->
+        <item>@color/white</item> <!-- free space text  -->
+        <item>@color/accent</item> <!-- memory bar -->
+
+        <!-- secondary dialog colors -->
+        <item>@color/primaryDark</item> <!-- folder tint -->
+        <item>@color/white</item> <!-- list bg -->
+        <item>@color/primary</item> <!-- list text -->
+        <item>@color/white</item> <!-- address bar tint -->
+        <item>@color/white</item> <!-- new folder hint tint -->
+        <item>@color/primary</item> <!-- select button color -->
+        <item>#da6c6c</item> <!-- new folder layour bg -->
+        <item>@color/primary</item> <!-- fab multiselect color -->
+        <item>@color/primaryDark</item> <!-- address bar bg -->
+    </array>
+
 </resources>

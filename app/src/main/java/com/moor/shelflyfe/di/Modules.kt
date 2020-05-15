@@ -7,7 +7,6 @@ import com.moor.shelflyfe.BuildConfig
 import com.moor.shelflyfe.R
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.api.google.GoogleBooksService
-import com.moor.shelflyfe.api.gr.GoodReadsService
 import com.moor.shelflyfe.api.itunes.ItunesService
 import com.moor.shelflyfe.api.nyt.NytService
 import com.moor.shelflyfe.api.openlib.OpenLibService
@@ -50,27 +49,6 @@ val applicationModule = module(override = true) {
             .build().create(NytService::class.java)
     }
 
-    single<GoodReadsService>{
-         Retrofit.Builder().baseUrl(GoodReadsService.baseUrl)
-         .client(OkHttpClient.Builder().addInterceptor{ chain ->
-             val original: Request = chain.request()
-             val originalHttpUrl: HttpUrl = original.url()
-             val url = originalHttpUrl.newBuilder()
-                 .addQueryParameter("key", BuildConfig.GoodReadsKey)
-                 .build()
-
-             val requestBuilder: Request.Builder = original.newBuilder()
-                 .url(url)
-             val request: Request = requestBuilder.build()
-             chain.proceed(request)
-         }.build())
-         .addConverterFactory(TikXmlConverterFactory.create(
-             TikXml.Builder()
-             .exceptionOnUnreadXml(false)
-             .build()
-         ))
-        .build().create(GoodReadsService::class.java)
-    }
 
     single <GoogleBooksService>{
         Retrofit.Builder().baseUrl(GoogleBooksService.baseUrl)
@@ -100,7 +78,7 @@ val applicationModule = module(override = true) {
     }
 
 
-    factory { BookRepository(get(),get(),get(),get(),get()) }
+    factory { BookRepository(get(),get(),get(),get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { ExploreViewModel(get()) }
     viewModel { SearchViewModel(get()) }

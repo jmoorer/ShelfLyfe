@@ -2,9 +2,6 @@ package com.moor.shelflyfe.api
 
 import com.moor.shelflyfe.api.google.GoogleBooksService
 import com.moor.shelflyfe.api.google.models.GoogleResponse
-import com.moor.shelflyfe.api.gr.GoodReadsService
-//import com.moor.shelflyfe.api.gr.models.AuthorResponse
-import com.moor.shelflyfe.api.gr.models.BookResponse
 import com.moor.shelflyfe.api.itunes.ItunesService
 import com.moor.shelflyfe.api.nyt.NytService
 import com.moor.shelflyfe.api.openlib.OpenLibService
@@ -13,7 +10,6 @@ import com.moor.shelflyfe.api.openlib.models.DetailResponse
 
 class BookRepository(
     val nytService: NytService,
-    val goodReadsService: GoodReadsService,
     val googleBooksService: GoogleBooksService,
     val itunesService: ItunesService,
     var openLibService: OpenLibService

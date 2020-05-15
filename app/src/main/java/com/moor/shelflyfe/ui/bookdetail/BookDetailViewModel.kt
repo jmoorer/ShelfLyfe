@@ -3,7 +3,8 @@ package com.moor.shelflyfe.ui.bookdetail
 import androidx.lifecycle.*
 import com.moor.shelflyfe.api.BookRepository
 import com.moor.shelflyfe.api.google.models.VolumeInfo
-import com.moor.shelflyfe.api.gr.models.BookInfo
+
+import com.moor.shelflyfe.api.openlib.models.BookData
 import com.moor.shelflyfe.db.Favorite
 import com.moor.shelflyfe.db.Favorite_
 import com.moor.shelflyfe.db.ObjectBox
@@ -16,6 +17,7 @@ import io.objectbox.android.AndroidScheduler
 import io.objectbox.android.ObjectBoxDataSource
 import io.objectbox.android.ObjectBoxLiveData
 import io.objectbox.query.Query
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -24,10 +26,11 @@ class BookDetailViewModel(val repository: BookRepository) : ViewModel() {
 
     private var query: Query<Favorite>?=null
     private var bookDetails = MutableLiveData<BookDetails>()
+    var bookData= MutableLiveData<BookData?>()
     private val isFavorite = MutableLiveData<Boolean>()
     private val favoriteBox = ObjectBox.boxStore.boxFor(Favorite::class.java)
 
-    var  subjects = MutableLiveData<List<ListItem>>()
+
 
 
     fun isFavorited(isbn:String): LiveData<Boolean> {
@@ -39,22 +42,11 @@ class BookDetailViewModel(val repository: BookRepository) : ViewModel() {
     }
    fun getBookDetails(isbn: String): LiveData<BookDetails> {
        viewModelScope.launch {
-           val details=loadDetails(isbn)
-           details?.let { bookDetails.value =details }
+           async { loadDetails(isbn)}.start()
+           async { loadData(isbn) }.start()
        }
        return bookDetails
    }
-    fun getSubjects(isbn: String): LiveData<List<ListItem>> {
-        viewModelScope.launch {
-            val key = "ISBN:${isbn}"
-            var data=repository.openLibService.getBookDataByIsbn(key)[key]
-            data?.subjects?.map { ListItem(it.url.split("/").last(),it.name) }
-                ?.let {
-                    subjects.postValue(it)
-                }
-        }
-        return subjects
-    }
 
     fun  toggleFavorite(){
         if(isFavorite.value==true){
@@ -74,12 +66,17 @@ class BookDetailViewModel(val repository: BookRepository) : ViewModel() {
     }
 
 
-    private suspend fun loadDetails(isbn: String):BookDetails? = withContext(viewModelScope.coroutineContext){
+    private  suspend fun loadData(isbn: String){
+        val key = "ISBN:${isbn}"
+        val data=repository.openLibService.getBookDataByIsbn(key)[key]
+        bookData.postValue(data)
+    }
+    private suspend fun loadDetails(isbn: String) {
         val key = "ISBN:${isbn}"
         val details = repository.openLibService.getBookDetailsByIsbn(key)[key]?.details
         val volume:VolumeInfo?= repository.search("isbn:${isbn}").items?.first()?.volumeInfo
 
-       return@withContext BookDetails(
+       var data = BookDetails(
            isbn=isbn,
            title = details?.title?:volume?.title?:"",
            author = details?.authors?.map { it.name }?:volume?.authors?: emptyList(),
@@ -87,11 +84,10 @@ class BookDetailViewModel(val repository: BookRepository) : ViewModel() {
            imageUrl = details?.covers?.first()?.let { openLibCoverUrl(it) }?:volume?.imageLinks?.thumbnail?.replace("http", "https"),
            publishedDate = details?.publishDate?:volume?.publishedDate,
            publisher = details?.publishers?.first()?:volume?.publisher,
-           rating = volume?.averageRating?:0f,
-           similarBooks = emptyList()
-           //bookDetails.similar_books?.map { s-> Book(s.title!!,s.author!!,s.isbn13!!,s.image_url!!)}?: emptyList()
+           rating = volume?.averageRating?:0f
        );
 
+        bookDetails.postValue(data)
     }
 
 }

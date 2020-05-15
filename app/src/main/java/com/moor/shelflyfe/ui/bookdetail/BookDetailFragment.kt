@@ -10,12 +10,14 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.moor.shelflyfe.R
 import com.moor.shelflyfe.creatLoadingDialog
 import com.moor.shelflyfe.databinding.BookDetailFragmentBinding
 import com.moor.shelflyfe.load
 import com.moor.shelflyfe.ui.*
+import com.moor.shelflyfe.ui.list.ListItem
 import com.moor.shelflyfe.ui.search.SearchDialogFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -62,13 +64,20 @@ class BookDetailFragment : Fragment(), OnBookClickListner {
             }
         })
 
-//        viewModel.getSubjects(args.isbn).observe(viewLifecycleOwner, Observer { subjects->
-//            binding.tags.apply{
-//                adapter=TagAdapter(subjects)
-//                layoutManager= StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
-//                addItemDecoration(SpacesItemDecoration(8))
-//            }
-//        })
+        viewModel.bookData.observe(viewLifecycleOwner, Observer { data->
+
+            data?.subjects?.let {subjects->
+                binding.tags.apply{
+                    adapter=TagAdapter(subjects.map { ListItem(it.url,it.name) })
+                    layoutManager= StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                    addItemDecoration(SpacesItemDecoration(8))
+                }
+            }
+            data?.links?.let {
+
+            }
+
+        })
         val alert= creatLoadingDialog()
         alert?.show()
         viewModel.getBookDetails(args.isbn).observe(viewLifecycleOwner, Observer { book->

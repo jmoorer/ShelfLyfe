@@ -5,14 +5,12 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ProgressBar
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
@@ -33,7 +31,6 @@ import com.moor.shelflyfe.db.Favorite
 import nl.siegmann.epublib.epub.EpubReader
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 
@@ -130,12 +127,15 @@ class HomeFragment : Fragment(), FavoritesAdapter.OnFavoriteClickListener,
                 REQUEST_PERMISSIONS_CODE_WRITE_STORAGE
             )
         } else{
+            val theme = StorageChooser.Theme(context)
+            theme.scheme = resources.getIntArray(R.array.paranoid_theme)
             val chooser = StorageChooser.Builder()
                 .withActivity(activity)
                 .withFragmentManager(activity?.fragmentManager)
                 .withMemoryBar(true)
                 .allowCustomPath(true)
                 .setType(StorageChooser.FILE_PICKER)
+                .setTheme(theme)
                 .build()
 
 
@@ -176,8 +176,8 @@ class HomeFragment : Fragment(), FavoritesAdapter.OnFavoriteClickListener,
         grantResults: IntArray
     ) {
         if (requestCode == REQUEST_PERMISSIONS_CODE_WRITE_STORAGE) {
-            if (permissions[0] == Manifest.permission.WRITE_EXTERNAL_STORAGE
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if(permissions.contentEquals(permissions) &&
+                grantResults.all { it==PackageManager.PERMISSION_GRANTED }) {
                importEbook()
             }
         }
