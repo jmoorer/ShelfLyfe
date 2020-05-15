@@ -21,8 +21,8 @@ class BookListViewModel(val repository: BookRepository) : ViewModel() {
     fun getBookList():LiveData<List<Book>> =books
 
     fun  loadBooksByGenre(genre: String){
+        setBooks(emptyList())
         viewModelScope.launch {
-            setBooks(emptyList())
             val books=repository.search( "subject:${genre}" ,"newest").items?.map { it.asBook() }
             books?.let { setBooks(it) }
         }
@@ -30,8 +30,9 @@ class BookListViewModel(val repository: BookRepository) : ViewModel() {
 
 
     fun  loadBooksByBestSellerList(name: String){
+        setBooks(emptyList())
         viewModelScope.launch {
-            setBooks(emptyList())
+
             var books=repository.getBestSellerList(name)?.bestSellers?.map { it.asBook() }
             books?.let { setBooks(it) }
         }

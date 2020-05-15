@@ -13,6 +13,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ProgressBar
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -129,33 +130,25 @@ class HomeFragment : Fragment(), FavoritesAdapter.OnFavoriteClickListener,
 
             chooser.setOnSelectListener { path ->
                     if(path.endsWith("epub")){
-                        val alert: AlertDialog.Builder = AlertDialog.Builder(context)
-                        val edittext = EditText(context)
-                        alert.setMessage("Enter your file name")
-                        alert.setTitle("Import as ")
-
-                        alert.setView(edittext)
-
-                        alert.setPositiveButton("Ok"){ dialog, whichButton ->
-                             //What ever you want to do with the value
-
-                            val name = edittext.text.toString()
-                            var target= File(requireContext().getExternalFilesDir("books"),"${name}.epub")
-                            File(path).let {source->
-
-                                source.copyTo(target)
-                                source.delete()
-                                ingestEbook(target.path)
-                            }
-
-                        }
-
-                        alert.setNegativeButton(
-                            "Cancel"){ dialog, whichButton ->
-                                // what ever you want to do with No option.
-                        }
-
-                        alert.show()
+                        ingestEbook(path)
+//                        val edittext = EditText(context)
+//                        val alert = AlertDialog.Builder(context)
+//                       .setMessage("Enter your file name")
+//                        .setTitle("Import as ")
+//                        .setView(edittext)
+//                        .setPositiveButton("Ok"){ dialog, whichButton ->
+//
+//                            val name = edittext.text.toString()
+//                            val target= File(requireContext().getExternalFilesDir("books"),"${name}.epub")
+//                            File(path).let {source->
+//                                source.copyTo(target)
+//                                ingestEbook(target.path)
+//                            }
+//
+//                        }.setNegativeButton(
+//                            "Cancel"){ dialog, whichButton ->
+//                        }
+//                        alert.show()
 
 
 
@@ -183,6 +176,11 @@ class HomeFragment : Fragment(), FavoritesAdapter.OnFavoriteClickListener,
 
 
             // Load Book from inputStream
+            val alert = AlertDialog.Builder(context)
+                .setMessage("Importing")
+                .setView(ProgressBar(context))
+                .create()
+            alert.show()
             val book = EpubReader().readEpub(FileInputStream(path))
             val targetArray = ByteArray(book.coverImage.inputStream.available())
             book.coverImage.inputStream.read(targetArray)
@@ -192,6 +190,7 @@ class HomeFragment : Fragment(), FavoritesAdapter.OnFavoriteClickListener,
                 path = path,
                 image = targetArray
             ))
+            alert.dismiss()
 
         } catch (e: IOException) {
             Log.e("epublib", e.message)

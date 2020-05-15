@@ -59,7 +59,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:background="@color/white"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -89,17 +89,30 @@
                 android:layout_marginBottom="16dp"/>
         </FrameLayout>
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/sections"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            />
+            android:minHeight="200dp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/sections"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                />
+            <ProgressBar
+                android:id="@+id/section_loader"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
+
         <TextView
             android:layout_marginVertical="16dp"
             android:text="More"
             android:textSize="22sp"
+            android:layout_marginStart="8dp"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -109,6 +122,8 @@
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             />
+
+
 
 
 

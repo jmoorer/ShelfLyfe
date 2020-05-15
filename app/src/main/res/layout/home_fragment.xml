@@ -53,18 +53,13 @@
                             android:layout_marginVertical="16dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
-                        <ViewSwitcher
-                            android:id="@+id/view_switcher"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            >
-                        <include android:id="@+id/empty" layout="@layout/empty_favorites"/>
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/sections"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             />
-                        </ViewSwitcher>
+
                     </LinearLayout>
 
 

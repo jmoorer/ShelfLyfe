@@ -52,15 +52,17 @@ class ExploreFragment : Fragment(), OnBookClickListner, CategoryAdapter.OnGenreC
         })
 
         viewModel.sections.observe(viewLifecycleOwner, Observer { sections->
-
+           binding.sectionLoader.visibility= View.GONE
            binding.sections.adapter= SectionAdapter(sections).apply {
                listener= this@ExploreFragment
+
            }
+            binding.sections.layoutManager= LinearLayoutManager(context)
         })
 
         viewModel.bestSellerList.observe(viewLifecycleOwner, Observer {  lists->
              lists?.let {
-                 var bestSellerList =  it.map { l-> ListItem(l.listNameEncoded!!,l.displayName!!) }.toTypedArray()
+                 val bestSellerList =  it.map { l-> ListItem(l.listNameEncoded!!,l.displayName!!) }.toTypedArray()
                  binding.sellerList.apply {
                      adapter= ListAdapter(bestSellerList).apply {
                          listener= object:ListAdapter.OnClickListener{
@@ -69,8 +71,10 @@ class ExploreFragment : Fragment(), OnBookClickListner, CategoryAdapter.OnGenreC
                                  bookListViewModel.loadBooksByBestSellerList(listItem.key)
                              }
                          }
+
                      }
                      layoutManager= LinearLayoutManager(context)
+                     addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
                  }
             }
         })
@@ -96,15 +100,7 @@ class ExploreFragment : Fragment(), OnBookClickListner, CategoryAdapter.OnGenreC
            // inflateMenu(R.menu.explore_menu)
             //setOnMenuItemClickListener(this@ExploreFragment)
         }
-        binding.sections.apply {
-
-            layoutManager= LinearLayoutManager(context)
-            addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    DividerItemDecoration.VERTICAL
-                ))
-        }
+        binding.sectionLoader.visibility= View.VISIBLE
 
         return binding.root
     }

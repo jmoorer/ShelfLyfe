@@ -35,7 +35,7 @@ class BookListFragment : Fragment(), SearchAdapter.OnItemClickListner {
 
         binding = BookListFragmentBinding.inflate(inflater,container,false)
         binding.toolbar.title= args.title
-
+        binding.loading.visibility=View.VISIBLE
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
@@ -45,6 +45,9 @@ class BookListFragment : Fragment(), SearchAdapter.OnItemClickListner {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
        viewModel.getBookList().observe(viewLifecycleOwner, Observer { books->
+          if (books.any())
+              binding.loading.visibility=View.GONE
+
            binding.bookList.adapter= SearchAdapter(books).apply {
                listener=this@BookListFragment
            }
