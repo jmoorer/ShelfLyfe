@@ -9,22 +9,25 @@ import com.moor.shelflyfe.db.ObjectBox
 import com.moor.shelflyfe.db.Trending
 import com.moor.shelflyfe.di.applicationModule
 import io.objectbox.Box
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import org.acra.ACRA
+import org.acra.annotation.AcraCore
+import org.acra.annotation.AcraMailSender
 import org.json.JSONArray
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.startKoin
-import java.lang.Exception
 import java.util.*
 
 
+@AcraMailSender(mailTo = "moorermobile@gmail.com")
+@AcraCore(buildConfigClass = BuildConfig::class)
 class App : Application(){
 
 
     private lateinit var trendingBox: Box<Trending>
     private lateinit var genreBox: Box<Genre>
+
 
     override fun onCreate() {
         super.onCreate()
@@ -74,7 +77,7 @@ class App : Application(){
                         trendingBox.put(trending)
                     }
                 }catch (ex:Exception){
-                    
+
                 }
 
             }
@@ -83,6 +86,12 @@ class App : Application(){
 
 
 
+    }
+
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        ACRA.init(this)
     }
 
     companion object {

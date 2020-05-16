@@ -29,13 +29,14 @@ class ExploreViewModel(var repository: BookRepository) : ViewModel() {
             val advice= bestSellers?.lists?.getList("advice-how-to-and-miscellaneous")
             val business= bestSellers?.lists?.getList("business-books")
             val youngAdult= bestSellers?.lists?.getList("young-adult-hardcover")
-
+            val series= bestSellers?.lists?.getList("series-books")
             sections.value = listOf(
                 Section("Fiction",fiction!!),
                 Section("Non Fiction",nonfiction!!),
                 Section("Advice",advice!!),
                 Section("Business",business!!),
-                Section("Young Adult",youngAdult!!)
+                Section("Young Adult",youngAdult!!),
+                Section("Series",series!!)
             )
         }
     }

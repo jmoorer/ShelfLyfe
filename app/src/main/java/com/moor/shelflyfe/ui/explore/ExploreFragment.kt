@@ -122,6 +122,7 @@ class ExploreFragment : Fragment(), OnBookClickListner, CategoryAdapter.OnGenreC
 
     override fun onGenreClick(genre: Genre) {
         findNavController().navigate(R.id.bookListFragment, bundleOf("title" to genre.name) )
+        bookListViewModel.loadBooksByGenre(genre.name.toLowerCase().split("&").first())
     }
 
     override fun onClick(book: Trending) {

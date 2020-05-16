@@ -10,8 +10,8 @@
         android:layout_height="match_parent">
         <TextView
             android:id="@+id/tag"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="16dp"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="4dp"
             android:layout_gravity="center"
             android:text="@string/place_holder_text"
             android:textColor="@color/white"

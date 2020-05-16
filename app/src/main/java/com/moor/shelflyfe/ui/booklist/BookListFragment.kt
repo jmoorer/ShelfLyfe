@@ -45,13 +45,14 @@ class BookListFragment : Fragment(), SearchAdapter.OnItemClickListner {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
        viewModel.getBookList().observe(viewLifecycleOwner, Observer { books->
-          if (books.any())
-              binding.loading.visibility=View.GONE
+
+           binding.loading.visibility=View.GONE
 
            binding.bookList.adapter= SearchAdapter(books).apply {
                listener=this@BookListFragment
            }
            binding.bookList.layoutManager= LinearLayoutManager(context)
+
        })
     }
 

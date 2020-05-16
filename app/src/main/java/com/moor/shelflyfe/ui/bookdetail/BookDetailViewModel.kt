@@ -26,7 +26,7 @@ class BookDetailViewModel(val repository: BookRepository) : ViewModel() {
 
     private var query: Query<Favorite>?=null
     private var bookDetails = MutableLiveData<BookDetails>()
-    var bookData= MutableLiveData<BookData?>()
+    private var bookData= MutableLiveData<BookData?>()
     private val isFavorite = MutableLiveData<Boolean>()
     private val favoriteBox = ObjectBox.boxStore.boxFor(Favorite::class.java)
 
@@ -42,12 +42,16 @@ class BookDetailViewModel(val repository: BookRepository) : ViewModel() {
     }
    fun getBookDetails(isbn: String): LiveData<BookDetails> {
        viewModelScope.launch {
-           async { loadDetails(isbn)}.start()
-           async { loadData(isbn) }.start()
+          loadDetails(isbn)
        }
        return bookDetails
    }
-
+    fun getBookData(isbn: String):LiveData<BookData?>{
+        viewModelScope.launch {
+             loadData(isbn)
+        }
+        return bookData
+    }
     fun  toggleFavorite(){
         if(isFavorite.value==true){
             query?.remove()
